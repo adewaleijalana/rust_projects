@@ -15,8 +15,7 @@ fn main() {
     //     let result = longest(string1.as_str(), string2.as_str());
     //     println!("The longest string is: {result}");
     // }
-//3
-
+//3ASWEFT
     // let string1 = String::from("long string is long");
     // let result;
 
