@@ -56,6 +56,6 @@ mod test {
 
     #[test]
     fn test_add(){
-        assert_eq!(4, 2 + 2);
+        assert_eq!(6, 2 + 4);
     }
 }
