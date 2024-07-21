@@ -38,7 +38,6 @@ impl<'a> Register<'a> {
     }
 }
 
-
 #[cfg(test)]
 mod test {
     use super::*;
@@ -52,10 +51,5 @@ mod test {
         let reg = registration.register();
 
         assert!(reg.is_ok());
-    }
-
-    #[test]
-    fn test_add(){
-        assert_eq!(6, 2 + 4);
     }
 }
