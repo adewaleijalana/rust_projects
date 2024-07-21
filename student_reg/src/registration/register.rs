@@ -37,3 +37,20 @@ impl<'a> Register<'a> {
         Ok(())
     }
 }
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_register() {
+        let student = Student::new("Rose".to_string(), "Dewale".to_string());
+        let course = Course::new("Physiology".to_string());
+        let registration = Register::registration(&student, &course);
+
+        let reg = registration.register();
+
+        assert!(reg.is_ok());
+    }
+}
