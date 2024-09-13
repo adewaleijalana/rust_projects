@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+  "bills_pay_web",
+  "bills_pay_domain",
+  "bills_pay_repos",
+  "bills_pay_service"
+]

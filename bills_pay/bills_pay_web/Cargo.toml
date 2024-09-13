@@ -1,0 +1,7 @@
+[package]
+name = "bills_pay_web"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bills_pay_service = { path = "../bills_pay_service"}
