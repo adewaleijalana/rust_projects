@@ -1,15 +1,15 @@
-use std::env::{self, Args};
+use std::env::{self};
 
 pub struct Config {
     pub query: String,
     pub file_path: String,
-    pub ignore_case: bool
+    pub ignore_case: bool,
 }
 
 impl Config {
     pub fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
         args.next();
-        
+
         let query = match args.next() {
             Some(arg) => arg,
             None => return Err("Didn't get a query string"),
@@ -22,6 +22,10 @@ impl Config {
 
         let ignore_case = env::var("IGNORE_CASE").is_ok();
 
-        Ok(Config { query, file_path, ignore_case })
+        Ok(Config {
+            query,
+            file_path,
+            ignore_case,
+        })
     }
 }
