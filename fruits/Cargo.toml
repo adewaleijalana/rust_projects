@@ -1,0 +1,8 @@
+[package]
+name = "Fruits"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+test_macro = { path = "../test_macro" }
+test_macro_derive = { path = "../test_macro/test_macro_derive" }
