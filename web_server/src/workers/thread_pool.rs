@@ -1,5 +1,9 @@
-use std::{sync::{mpsc, Arc, Mutex}, thread};
+use std::{
+    sync::{mpsc, Arc, Mutex},
+    thread,
+};
 
+#[allow(dead_code)]
 pub struct ThreadPool {
     workers: Vec<Worker>,
     sender: mpsc::Sender<Job>,
@@ -22,7 +26,6 @@ impl ThreadPool {
 
         let receiver = Arc::new(Mutex::new(receiver));
 
-
         for i in 0..size {
             // create some threads and store them in the vector
             workers.push(Worker::new(i, Arc::clone(&receiver)));
@@ -40,6 +43,7 @@ impl ThreadPool {
     }
 }
 
+#[allow(dead_code)]
 struct Worker {
     id: usize,
     handler: thread::JoinHandle<()>,
