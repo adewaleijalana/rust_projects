@@ -1,5 +1,6 @@
 use std::env;
 use std::process;
+use std::process::Command;
 
 use minigrep::config::Config;
 use minigrep::run;
@@ -17,5 +18,21 @@ fn main() {
     if let Err(e) = run(config){
         eprintln!("Application error: {e}");
         process::exit(1);
+    }
+    // run_cmd();
+}
+
+fn run_cmd() {
+    let output = Command::new("echo")
+        .arg("Hello from Rust!")
+        .output()
+        .expect("Failed to execute command");
+
+    if output.status.success() {
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        println!("Output: {}", stdout.trim());
+    } else {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        eprintln!("Error: {}", stderr.trim());
     }
 }

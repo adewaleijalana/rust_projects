@@ -36,3 +36,17 @@ pub fn divsion(num1: i32, num2: i32) -> Result<i32, &'static str> {
     Ok(num1 / num2)
     
 }
+
+pub fn word_to_bytes(s: &String) {
+    let bytes = s.as_bytes();
+    for byte in bytes {
+        println!("{byte}")
+    }
+}
+
+pub fn slice_array(arr: &mut [i32]) {
+    arr[0] = 100;
+    for (i, v) in arr.iter().enumerate() {
+        println!("{i} and {v}")
+    }
+}
