@@ -1,6 +1,12 @@
 fn main() {
-    sum_triangle_array(vec![1, 2, 3, 4, 5]);
-}
+    // sum_triangle_array(vec![1, 2, 3, 4, 5]);
+    // test_1();
+    let text = "Almond Coffees";
+    println!("{{{} == {}}}", &text[8..], &text[8..=13]);
+
+    println!("{{&text[8..] == &text[8..=13]}}");
+
+}   
 
 fn sum_triangle_array(arr: Vec<i32>){
 
@@ -14,4 +20,19 @@ fn sum_triangle_array(arr: Vec<i32>){
     }
     sum_triangle_array(temp_arr);
     println!("{:?}", arr);
+}
+
+fn test(mut num: i32) {
+    num += 1;
+}
+
+fn test_1() {
+    let mut st: &mut i32;
+
+    let mut y = 5;
+    let mut x = 15;
+    st = &mut y;
+    st = &mut x;
+
+    println!("{}", st);
 }
