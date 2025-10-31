@@ -8,10 +8,9 @@ fn main() {
     create_window();
 }
 
-
 // fn main() {
 //     let mut likes: HashMap<&str, String> = HashMap::new();
- 
+
 //     likes.entry("Nouman").or_insert("apple".to_string());
 //     likes
 //         .entry("Nouman")
