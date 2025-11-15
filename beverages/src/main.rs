@@ -5,10 +5,11 @@ fn main() {
     latte_coffe.consume();
     println!("After consuming my coffee: {:?}", latte_coffe);
 
-    let cappuccino = Coffee::<&str>::new("cappuccino", Milk::Almond, 25);
+    let cappuccino = Coffee::<String>::new("Cappuccino".to_string(), Milk::Almond, 25);
     println!("{:?}", cappuccino);
+    println!("{}", cappuccino.get_data());
 
-    let pepsi = Soda::new(10, 25.6, String::from("Cherry"), 24);
+    let pepsi = Soda::new(10, 25.6, String::from("Cherry"));
     println!("{}", pepsi);
 
     let mut coke = pepsi.clone();

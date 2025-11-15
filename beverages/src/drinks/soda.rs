@@ -11,12 +11,12 @@ pub struct Soda {
 }
 
 impl Soda {
-    pub fn new(calories: u32, price: f64, flavor: String, percentage: u32) -> Self {
+    pub fn new(calories: u32, price: f64, flavor: String) -> Self {
         Self {
             calories,
             price,
             flavor,
-            percentage,
+            percentage: 100
         }
     }
 }
@@ -40,10 +40,10 @@ impl Display for Soda {
 impl Clone for Soda {
     fn clone(&self) -> Self {
         Self {
-            calories: self.calories.clone(),
-            price: self.price.clone(),
+            calories: self.calories,
+            price: self.price,
             flavor: self.flavor.clone(),
-            percentage: self.percentage.clone(),
+            percentage: self.percentage,
         }
     }
 }
