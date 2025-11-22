@@ -46,3 +46,10 @@ pub fn find_string_that_has_content<'a, 'b>(
         second
     }
 }
+
+fn test() {
+    let mut fruits = vec!["Apples", "Strawberries", "Pears"];
+    let fruit_ref_1 = &mut fruits;
+    let fruit_ref_2 = &mut fruits;
+    println!("{fruit_ref_2:?}");
+}
