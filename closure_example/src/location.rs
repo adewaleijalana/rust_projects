@@ -22,12 +22,14 @@ pub struct Map<'a> {
 }
 
 impl<'a> Map<'a> {
+    pub fn new(locations: &'a [Location]) -> Self {
+        Self { locations }
+    }
 
-  pub fn new(locations: &'a [Location]) -> Self {
-      Self { locations }
-  }
-
-  pub fn explore<F>(&self, process: F) where F: FnMut(&Location){
-    let _ = &self.locations.iter().for_each(process);
-  }
+    pub fn explore<F>(&self, process: F)
+    where
+        F: FnMut(&Location),
+    {
+        let _ = &self.locations.iter().for_each(process);
+    }
 }

@@ -69,8 +69,16 @@ pub fn unwrap_or_else_test_result() {
     println!("Food from Err(e): {food}");
 }
 
-pub fn closure_function<F>(f : F)
-where F: FnOnce()
+pub fn closure_function<F>(f: F)
+where
+    F: FnOnce(),
+{
+    f();
+}
+
+fn test<F>(mut f: F)
+where
+    F: FnMut(),
 {
     f();
 }
