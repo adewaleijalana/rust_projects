@@ -1,3 +1,6 @@
+mod functions;
+
+use functions::*;
 fn main() {
-    println!("Hello, world!");
+    manual_iteration();
 }
