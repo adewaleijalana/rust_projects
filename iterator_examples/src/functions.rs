@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 pub fn manual_iteration() {
-    let mut  numbers = vec![4, 8, 15, 16, 23, 42];
+    let mut numbers = vec![4, 8, 15, 16, 23, 42];
 
     // let mut current_idx = 0;
     // let final_idx = numbers.len() - 1;
@@ -25,9 +25,7 @@ pub fn manual_iteration() {
     }
 
     println!("{numbers:?}")
-
 }
-
 
 pub fn hash_map_iteration() {
     let mut todos = HashMap::new();
@@ -40,4 +38,15 @@ pub fn hash_map_iteration() {
     }
 
     println!("{todos:?}")
+}
+
+pub fn teas() {
+    let teas = [
+        String::from("Hot Earl Grey"),
+        String::from("Iced Green"),
+        String::from("Green Tea"),
+    ];
+
+    let more_teas: Vec<String> = teas.iter().cloned().collect();
+    println!("{more_teas:?}")
 }
