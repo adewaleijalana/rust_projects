@@ -2,11 +2,20 @@
 
 mod students;
 
+use std::io;
+
 use students::read_student_file;
-fn main() {
+fn main() -> io::Result<()>{
     let students = read_student_file();
-    match students {
-        Ok(students) => println!("{students:#?}"),
-        Err(e) => println!("{e:#?}")
-    }
+    let students = match students {
+        Ok(students) => students,
+        Err(e) => {
+            println!("{e:#?}");
+            return Err(e);
+        }
+    };
+
+    println!("stedunt lists {students:#?}");
+
+    Ok(())
 }
