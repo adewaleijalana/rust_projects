@@ -6,5 +6,6 @@ use functions::*;
 fn main() {
     // manual_iteration();
     // hash_map_iteration();
-    teas();
+    // teas();
+    range_example();
 }

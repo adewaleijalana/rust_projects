@@ -50,3 +50,13 @@ pub fn teas() {
     let more_teas: Vec<String> = teas.iter().cloned().collect();
     println!("{more_teas:?}")
 }
+
+pub fn range_example() {
+    let fifty_numbers = 1..=50;
+
+    for number in  fifty_numbers.rev().take(15){
+        print!("{number}/")
+    }
+
+    // println!("{fifty_numbers:?}") won't compile because of ownership rule
+}
