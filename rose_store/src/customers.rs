@@ -1,2 +1,2 @@
-mod customer_order;
-mod customer;
+pub mod customer_order;
+pub mod customer;

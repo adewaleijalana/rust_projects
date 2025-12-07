@@ -1,6 +1,7 @@
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub enum Product {
-    blender,
-    microwave,
-    toaster,
-    fridge,
+    Blender,
+    Microwave,
+    Toaster,
+    Fridge,
 }
