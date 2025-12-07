@@ -1,0 +1,4 @@
+[jobs.run-foreground]
+command = ["cargo", "run"]
+need_stdout = true
+background = false
