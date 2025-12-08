@@ -1,8 +1,11 @@
 #![allow(dead_code, unused)]
 
-use std::{collections::HashMap, env};
+use std::{collections::HashMap, env, f32::consts::E};
 
-use crate::{customers::customer_order::CustomerOrder, products::product::Product};
+use crate::{
+    customers::{customer::Customer, customer_order::CustomerOrder},
+    products::product::Product,
+};
 
 mod customers;
 mod products;
@@ -83,4 +86,34 @@ fn main() {
     );
 
     println!("{results:#?}");
+
+    let shipped_result = orders
+        .iter()
+        .find(|order| !order.get_is_shipped())
+        .map(|order| CustomerOrder::new(*order.get_product(), order.get_quantity(), true))
+        .unwrap();
+
+    // println!("{shipped_result:#?}");
+
+    let mut customers: Vec<_> = customer_ids_by_order
+        .iter()
+        .zip(orders.iter())
+        .fold(HashMap::<i32, Vec<CustomerOrder>>::new(), |mut acc, ele| {
+            if acc.contains_key(ele.0) {
+                let a = acc.get_mut(ele.0).unwrap();
+                a.push(*ele.1);
+            } else {
+                let mut orders = vec![];
+                orders.push(*ele.1);
+                acc.insert(*ele.0, orders);
+            }
+            acc
+        })
+        .iter()
+        .map(|(key, value)| Customer::new(*key as u32, value.clone()))
+        .collect();
+
+    customers.sort_by_key(|customer| customer.get_customer_id());
+
+    println!("{customers:#?}");
 }

@@ -1,6 +1,6 @@
 use crate::products::product::Product;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct CustomerOrder {
     product: Product,
     quantity: u32,
