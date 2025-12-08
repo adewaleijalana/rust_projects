@@ -21,22 +21,22 @@ fn main() {
 
     let customer_ids_by_order = [2, 1, 2, 3, 4, 1];
 
-    let results: Vec<_> = orders
+    let blender_orders: Vec<_> = orders
         .iter()
         .filter(|order| order.get_product().eq(&Product::Blender))
         .collect();
 
-    // println!("{results:#?}");
+    println!("{blender_orders:#?}");
 
-    let sum = orders
+    let total_microwave = orders
         .iter()
         .filter(|order| order.get_product().eq(&Product::Microwave))
         .map(|order| order.get_quantity())
         .sum::<u32>();
 
-    println!("sum of the quantity of Microwave: {sum}");
+    println!("sum of the quantity of Microwave: {total_microwave}");
 
-    let sum_2 = orders
+    let microwave_count = orders
         .iter()
         .filter_map(|order| {
             if order.get_product().eq(&Product::Microwave) {
@@ -47,9 +47,9 @@ fn main() {
         })
         .sum::<u32>();
 
-    println!("sum of the quantity of Microwave using filter_map: {sum_2}");
+    println!("sum of the quantity of Microwave using filter_map: {microwave_count}");
 
-    let mut envs_arg = env::args().skip(1);
+    let mut envs_arg = env::args().skip(1).take(1);
 
     // println!("args: {envs_arg:?}");
 
@@ -67,9 +67,9 @@ fn main() {
     // println!("{results:#?}");
 
     let results = orders.iter().filter(|order| !order.get_is_shipped()).fold(
-        HashMap::<&Product, u32>::new(),
-        |mut acc, element| {
-            *acc.entry(&element.get_product()).or_insert(0) += element.get_quantity();
+        HashMap::new(),
+        |mut data, order| {
+            *data.entry(order.get_product()).or_insert(0) += order.get_quantity();
 
             // if acc.contains_key(&element.get_product()) {
             //     println!("{}", acc[&element.get_product()]);
@@ -81,7 +81,7 @@ fn main() {
             //     acc.insert(element.get_product(), element.get_quantity());
             // }
 
-            acc
+            data
         },
     );
 
@@ -96,21 +96,27 @@ fn main() {
     // println!("{shipped_result:#?}");
 
     let mut customers: Vec<_> = customer_ids_by_order
-        .iter()
-        .zip(orders.iter())
-        .fold(HashMap::<i32, Vec<CustomerOrder>>::new(), |mut acc, ele| {
-            if acc.contains_key(ele.0) {
-                let a = acc.get_mut(ele.0).unwrap();
-                a.push(*ele.1);
-            } else {
-                let mut orders = vec![];
-                orders.push(*ele.1);
-                acc.insert(*ele.0, orders);
-            }
-            acc
-        })
-        .iter()
-        .map(|(key, value)| Customer::new(*key as u32, value.clone()))
+        .into_iter()
+        .zip(orders)
+        .fold(
+            HashMap::<u32, Vec<CustomerOrder>>::new(),
+            |mut ids_to_order, (customer_id, order)| {
+                // if ids_to_order.contains_key(customer_id) {
+                //     let a = ids_to_order.get_mut(customer_id).unwrap();
+                //     a.push(*order);
+                // } else {
+                //     let mut orders = vec![];
+                //     orders.push(*order);
+                //     ids_to_order.insert(*customer_id, orders);
+                // }
+
+                let orders = ids_to_order.entry(customer_id).or_insert(vec![]);
+                orders.push(order);
+                ids_to_order
+            },
+        )
+        .into_iter()
+        .map(|(key, value)| Customer::new(key, value.clone()))
         .collect();
 
     customers.sort_by_key(|customer| customer.get_customer_id());
