@@ -14,7 +14,7 @@ impl Customer {
         }
     }
 
-    pub fn get_customer_id(&self) -> u32{
+    pub fn get_customer_id(&self) -> u32 {
         self.customer_id
     }
 }
