@@ -16,8 +16,8 @@ impl CustomerOrder {
         }
     }
 
-    pub fn get_product(&self) -> Product {
-        self.product.clone()
+    pub fn get_product(&self) -> &Product {
+        &self.product
     }
 
     pub fn get_quantity(&self) -> u32 {

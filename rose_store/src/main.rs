@@ -1,6 +1,6 @@
 #![allow(dead_code, unused)]
 
-use std::env;
+use std::{collections::HashMap, env};
 
 use crate::{customers::customer_order::CustomerOrder, products::product::Product};
 
@@ -23,7 +23,7 @@ fn main() {
         .filter(|order| order.get_product().eq(&Product::Blender))
         .collect();
 
-    println!("{results:#?}");
+    // println!("{results:#?}");
 
     let sum = orders
         .iter()
@@ -56,10 +56,31 @@ fn main() {
         .parse::<u32>()
         .unwrap();
 
-     let results: Vec<_> = orders
+    let results: Vec<_> = orders
         .iter()
         .filter(|order| order.get_quantity() >= filter_var)
         .collect();
+
+    // println!("{results:#?}");
+
+    let results = orders.iter().filter(|order| !order.get_is_shipped()).fold(
+        HashMap::<&Product, u32>::new(),
+        |mut acc, element| {
+            *acc.entry(&element.get_product()).or_insert(0) += element.get_quantity();
+
+            // if acc.contains_key(&element.get_product()) {
+            //     println!("{}", acc[&element.get_product()]);
+            //     acc.insert(
+            //         &element.get_product(),
+            //         acc[&element.get_product()] + element.get_quantity(),
+            //     );
+            // } else {
+            //     acc.insert(element.get_product(), element.get_quantity());
+            // }
+
+            acc
+        },
+    );
 
     println!("{results:#?}");
 }
