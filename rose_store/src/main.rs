@@ -1,5 +1,7 @@
 #![allow(dead_code, unused)]
 
+use std::env;
+
 use crate::{customers::customer_order::CustomerOrder, products::product::Product};
 
 mod customers;
@@ -43,4 +45,21 @@ fn main() {
         .sum::<u32>();
 
     println!("sum of the quantity of Microwave using filter_map: {sum_2}");
+
+    let mut envs_arg = env::args().skip(1);
+
+    // println!("args: {envs_arg:?}");
+
+    let filter_var = envs_arg
+        .next()
+        .unwrap_or("2".to_string())
+        .parse::<u32>()
+        .unwrap();
+
+     let results: Vec<_> = orders
+        .iter()
+        .filter(|order| order.get_quantity() >= filter_var)
+        .collect();
+
+    println!("{results:#?}");
 }
