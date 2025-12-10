@@ -23,3 +23,15 @@ impl Museum {
         self.paintings.len() > 2
     }
 }
+
+#[cfg(test)]
+mod museum_tests {
+    use super::*;
+
+    #[test]
+    fn museum_sells_ticket_to_increase_revenue() {
+        let mut museum = Museum::new();
+        museum.sell_ticket();
+        assert_eq!(museum.revenue, 25);
+    }
+}
