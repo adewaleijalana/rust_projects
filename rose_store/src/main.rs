@@ -101,6 +101,7 @@ fn main() {
         .fold(
             HashMap::<u32, Vec<CustomerOrder>>::new(),
             |mut ids_to_order, (customer_id, order)| {
+                //1
                 // if ids_to_order.contains_key(customer_id) {
                 //     let a = ids_to_order.get_mut(customer_id).unwrap();
                 //     a.push(*order);
@@ -110,8 +111,18 @@ fn main() {
                 //     ids_to_order.insert(*customer_id, orders);
                 // }
 
-                let orders = ids_to_order.entry(customer_id).or_insert(vec![]);
-                orders.push(order);
+                //2
+                // let orders = ids_to_order.entry(customer_id).or_insert(vec![]);
+                // orders.push(order);
+
+                //3
+                ids_to_order
+                    .entry(customer_id)
+                    .and_modify(|orders: &mut Vec<CustomerOrder>| {
+                        orders.push(order);
+                    })
+                    .or_insert(vec![]);
+
                 ids_to_order
             },
         )
@@ -119,7 +130,7 @@ fn main() {
         .map(|(key, value)| Customer::new(key, value.clone()))
         .collect();
 
-    customers.sort_by_key(|customer| customer.get_customer_id());
+    // customers.sort_by_key(|customer| customer.get_customer_id());
 
     println!("{customers:#?}");
 }
