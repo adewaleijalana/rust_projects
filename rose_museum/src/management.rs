@@ -6,10 +6,10 @@ pub struct VenueManagement<T: TicketSeller> {
     manager: Option<String>,
 }
 
-impl VenueManagement<MovieTheater> {
-    pub fn new() -> Self {
+impl<T: TicketSeller> VenueManagement<T> {
+    pub fn new(venue: T) -> Self {
         Self {
-            venue: MovieTheater::new(),
+            venue,
             manager: None,
         }
     }
@@ -18,22 +18,22 @@ impl VenueManagement<MovieTheater> {
         self.manager = Some(manager.to_string());
     }
 
-    pub fn make_money(&mut self){
-      self.venue.sell_ticket();
+    pub fn make_money(&mut self) {
+        self.venue.sell_ticket();
     }
 }
 
 #[cfg(test)]
-mod tests{
-  use super::*;
-  use pretty_assertions::assert_eq;
+mod tests {
+    use super::*;
+    use pretty_assertions::assert_eq;
 
-  #[test]
-  fn venue_management_can_hire_manager() {
-      let mut venue_management = VenueManagement::new();
-      venue_management.hire_manager("Rose Manager");
+    #[test]
+    fn venue_management_can_hire_manager() {
+        let movie_theater = MovieTheater::new();
+        let mut venue_management = VenueManagement::new(movie_theater);
+        venue_management.hire_manager("Rose Manager");
 
-      assert_eq!(venue_management.manager, Some("Rose Manager".to_string()))
-  }
-
+        assert_eq!(venue_management.manager, Some("Rose Manager".to_string()))
+    }
 }
