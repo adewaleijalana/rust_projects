@@ -1,3 +1,5 @@
+use crate::ticket_seller::TicketSeller;
+
 pub struct Museum {
     paintings: Vec<String>,
     revenue: u32,
@@ -15,12 +17,14 @@ impl Museum {
         self.paintings.push(painting.to_string());
     }
 
-    pub fn sell_ticket(&mut self) {
-        self.revenue += 25;
-    }
-
     pub fn has_impressive_colletion(&self) -> bool {
         self.paintings.len() > 2
+    }
+}
+
+impl TicketSeller for Museum {
+    fn sell_ticket(&mut self) {
+        self.revenue += 25;
     }
 }
 
@@ -46,11 +50,11 @@ mod museum_tests {
 
     #[test]
     fn museum_has_impressive_colletion() {
-      let mut museum = Museum::new();
-       museum.buy_painting("Monalisa");
-       museum.buy_painting("Monalisa");
-       museum.buy_painting("Monalisa");
+        let mut museum = Museum::new();
+        museum.buy_painting("Monalisa");
+        museum.buy_painting("Monalisa");
+        museum.buy_painting("Monalisa");
 
-       assert!(museum.has_impressive_colletion());
+        assert!(museum.has_impressive_colletion());
     }
 }
