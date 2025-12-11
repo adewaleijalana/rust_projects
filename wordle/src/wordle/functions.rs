@@ -62,3 +62,23 @@ pub fn play() {
         }
     }
 }
+
+pub fn while_loop(end: i32) {
+    let mut counter  = 0;
+
+    // while true {
+    //     println!("counter is: {counter}");
+    //     if counter >= end{
+    //         break;
+    //     }
+    //     counter += 1;
+    // } 
+
+    loop {
+        println!("counter is: {counter}");
+        if counter >= end{
+            break;
+        }
+        counter += 1;
+    };
+}
