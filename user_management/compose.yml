@@ -1,14 +1,31 @@
 services:
+    axum_app:
+        build: . # Build from the current directory using the Dockerfile
+        ports:
+        - "8181:8181" # Map host port 8181 to container port 8181
+        environment:
+        # Pass environment variables to the Rust app, e.g., for database connection
+            DATABASE_URL: postgres://user:password@db:5432/user_management_db
+        depends_on:
+        - db
+        networks:
+        - axum-network
     db:
         image: postgres:15
         container_name: db
         environment:
             POSTGRES_USER: user
             POSTGRES_PASSWORD: password
-            POSTGRES_DB: mydatabase
+            POSTGRES_DB: user_management_db
         volumes:
             - pg_data:/var/lib/postgresql/data
         ports:
-            - "5433:5432" 
+            - "5433:5432"
+        networks:
+        - axum-network
 volumes:
     pg_data:
+
+networks:
+  axum-network:
+    driver: bridge

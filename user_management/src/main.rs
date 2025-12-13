@@ -38,7 +38,7 @@ async fn main() {
                 .put(user_handler::update_user)
                 .delete(user_handler::delete_user),
         )
-        .with_state(&db_pool);
+        .with_state(db_pool);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8181").await.unwrap();
     println!("Server running on port 8181");
