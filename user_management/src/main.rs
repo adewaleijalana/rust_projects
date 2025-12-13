@@ -1,8 +1,6 @@
 use axum::{
     Router,
-    extract::{Path, State},
-    http::StatusCode,
-    routing::{Route, delete, get, post, put},
+    routing::{get, post},
 };
 use sqlx::postgres::PgPoolOptions;
 

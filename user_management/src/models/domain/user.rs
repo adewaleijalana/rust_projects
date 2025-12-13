@@ -7,3 +7,13 @@ pub struct User {
     name: String,
     email: String,
 }
+
+impl User {
+    pub fn new() -> Self {
+        Self {
+            id: -1,
+            name: "".to_string(),
+            email: "".to_string(),
+        }
+    }
+}

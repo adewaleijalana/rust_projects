@@ -30,12 +30,12 @@ pub async fn list_users(State(pool): State<PgPool>) -> Result<Json<Vec<User>>, S
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)
 }
 
-pub async fn get_user() -> &'static str {
-    "Welcome to the User Management API"
+pub async fn get_user(State(pool): State<PgPool>) -> Result<Json<User>, StatusCode> {
+    Ok(Json(User::new()))
 }
 
-pub async fn update_user() -> &'static str {
-    "Welcome to the User Management API"
+pub async fn update_user() -> Result<Json<User>, StatusCode> {
+    Ok(Json(User::new()))
 }
 
 pub async fn delete_user() -> &'static str {
