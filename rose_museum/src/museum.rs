@@ -6,6 +6,17 @@ pub struct Museum {
 }
 
 impl Museum {
+
+    /// Creates a new Museum instance.
+    /// 
+    /// # Examples
+    /// ```
+    /// use rose_museum::museum::Museum;
+    /// 
+    /// let museum = Museum::new();
+    /// let empty_vec:Vec<String> = Vec::new();
+    /// assert_eq!(*museum.get_paintings(), empty_vec);
+    /// ```
     pub fn new() -> Self {
         Self {
             paintings: vec![],
@@ -15,6 +26,10 @@ impl Museum {
 
     pub fn buy_painting(&mut self, painting: &str) {
         self.paintings.push(painting.to_string());
+    }
+
+    pub fn get_paintings(&self) -> &Vec<String>{
+        &self.paintings
     }
 
     pub fn has_impressive_colletion(&self) -> bool {
