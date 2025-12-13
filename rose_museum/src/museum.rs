@@ -11,7 +11,7 @@ impl Museum {
     /// 
     /// # Examples
     /// ```
-    /// use rose_museum::museum::Museum;
+    /// use rose_museum::Museum;
     /// 
     /// let museum = Museum::new();
     /// let empty_vec:Vec<String> = Vec::new();

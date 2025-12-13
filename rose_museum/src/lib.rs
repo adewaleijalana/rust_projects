@@ -2,7 +2,7 @@
 
 mod management;
 mod movie_theater;
-pub mod museum;
+mod museum;
 mod ticket_seller;
 
 pub use management::*;
