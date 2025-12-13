@@ -1,10 +1,15 @@
 use axum::{
-    Router, extract::{Path, State}, http::StatusCode, routing::{Route, delete, get, put, post}
+    Router,
+    extract::{Path, State},
+    http::StatusCode,
+    routing::{Route, delete, get, post, put},
 };
-use sqlx::{postgres::PgPoolOptions};
+use sqlx::postgres::PgPoolOptions;
 
+use handlers::{root_handler, user_handler};
 use std::env;
 
+mod handlers;
 mod models;
 
 #[tokio::main]
@@ -16,14 +21,24 @@ async fn main() {
         .await
         .expect("Failed to connecto to db");
 
-    sqlx::migrate!().run(&db_pool).await.expect("Migration failed")
+    sqlx::migrate!()
+        .run(&db_pool)
+        .await
+        .expect("Migration failed");
 
     let app = Router::new()
-    .route("/", get(root))
-    .route("/users", post(create_user).get(list_users))
-    .route("/user/{id}", get(get_user).put(update_user).delete(delete_user))
-    .with_state(&db_pool);
-
+        .route("/", get(root_handler::root))
+        .route(
+            "/users",
+            post(user_handler::create_user).get(user_handler::list_users),
+        )
+        .route(
+            "/user/{id}",
+            get(user_handler::get_user)
+                .put(user_handler::update_user)
+                .delete(user_handler::delete_user),
+        )
+        .with_state(&db_pool);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8181").await.unwrap();
     println!("Server running on port 8181");
