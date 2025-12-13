@@ -17,6 +17,10 @@ impl MovieTheater {
     pub fn add_painting(&mut self, movie: &str) {
         self.movies.push(movie.to_string());
     }
+
+    pub fn get_sales(& self) -> u32{
+        self.sales
+    }
 }
 
 impl TicketSeller for MovieTheater {

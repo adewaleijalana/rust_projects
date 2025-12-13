@@ -21,6 +21,14 @@ impl<T: TicketSeller> VenueManagement<T> {
     pub fn make_money(&mut self) {
         self.venue.sell_ticket();
     }
+
+    pub fn get_manage(&self) -> Option<String> {
+        self.manager.clone()
+    }
+
+    pub fn get_venue(&self) -> &T{
+        &self.venue
+    }
 }
 
 #[cfg(test)]
