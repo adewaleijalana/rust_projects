@@ -27,4 +27,9 @@ impl Deck {
         let mut rng = rng();
         self.cards.shuffle(&mut rng);
     }
+
+    pub fn insert_jokers(&mut self) {
+        self.cards.push(Card::new(Rank::Joker, None));
+        self.cards.push(Card::new(Rank::Joker, None));
+    }
 }

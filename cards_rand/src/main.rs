@@ -6,9 +6,13 @@ mod card_deck;
 fn main() {
     let mut deck = Deck::new();
 
-    println!("deck before shuffle: {:#?}", deck);
+    // println!("deck before shuffle: {:#?}", deck);
 
     deck.shuffle();
 
-    println!("deck after shuffle: {:#?}", deck)
+    // println!("deck after shuffle: {:#?}", deck);
+
+    deck.insert_jokers();
+
+    println!("deck after inserting jokers: {:#?}", deck);
 }
