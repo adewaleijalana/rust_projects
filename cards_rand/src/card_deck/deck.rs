@@ -1,4 +1,4 @@
-use rand::{rng, seq::IndexedRandom};
+use rand::{rng, seq::{IndexedRandom, SliceRandom}};
 
 use crate::card_deck::{card::Card, rank::{self, Rank}, suit::Suit};
 
@@ -21,5 +21,10 @@ impl Deck {
         }).collect::<Vec<Card>>();
 
         Self { cards }
+    }
+
+    pub fn shuffle(&mut self) {
+        let mut rng = rng();
+        self.cards.shuffle(&mut rng);
     }
 }
