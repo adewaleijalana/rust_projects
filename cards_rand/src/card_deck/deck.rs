@@ -32,4 +32,14 @@ impl Deck {
         self.cards.push(Card::new(Rank::Joker, None));
         self.cards.push(Card::new(Rank::Joker, None));
     }
+
+    pub fn delete_random_card(&mut self) {
+        self.cards.pop_if(|card| {
+            rand::random_bool(13.0 / 20.0)
+        });
+    }
+
+    pub fn card_size(&self) -> usize {
+        self.cards.len()
+    }
 }
