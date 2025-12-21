@@ -1,4 +1,4 @@
-use rand::{rng, seq::{IndexedRandom, SliceRandom}};
+use rand::{Rng, rng, seq::{IndexedRandom, SliceRandom}};
 
 use crate::card_deck::{card::Card, rank::{self, Rank}, suit::Suit};
 
@@ -37,8 +37,13 @@ impl Deck {
     }
 
     pub fn insert_jokers(&mut self) {
-        self.cards.push(Card::new(Rank::Joker, None));
-        self.cards.push(Card::new(Rank::Joker, None));
+        let mut my_rang = rng();
+
+        for _ in 0..2 {
+            let randon_index = my_rang.random_range(0..self.cards.len());
+            let joker_card = Card::new(Rank::Joker, None);
+            self.cards.insert(randon_index, joker_card);
+        }
     }
 
     pub fn delete_random_card(&mut self) {
