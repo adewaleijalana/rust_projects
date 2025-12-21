@@ -11,14 +11,22 @@ impl Deck {
     pub fn new() -> Self {
         let suits = Suit::suits();
         let ranks = Rank::ranks();
+
+        let mut cards = Vec::new();
         
 
-        let cards = (1..=52).map(|_| {
-            let mut rng = rng();
-            let suit = suits.choose(&mut rng).cloned();
-            let rank = ranks.choose(&mut rng).unwrap().clone();
-            Card::new(rank, suit)
-        }).collect::<Vec<Card>>();
+        // let cards = (1..=52).map(|_| {
+        //     let mut rng = rng();
+        //     let suit = suits.choose(&mut rng).cloned();
+        //     let rank = ranks.choose(&mut rng).unwrap().clone();
+        //     Card::new(rank, suit)
+        // }).collect::<Vec<Card>>();
+
+        for suit in suits.into_iter() {
+            for rank in ranks.clone().into_iter() {
+                cards.push(Card::new(rank, Some(suit)));
+            }
+        }
 
         Self { cards }
     }
