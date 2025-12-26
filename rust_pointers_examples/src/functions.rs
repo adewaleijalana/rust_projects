@@ -6,7 +6,7 @@ pub fn test_fn() {
     // println!("{sushi_ref} and {sushi_ref2}");
 }
 
-pub fn raw_test() {
+pub fn raw_pointer_test() {
     let mut sushi = String::from("Yellowtail");
     let sushi_ref = &raw const sushi;
     let sushi_ref2: *const String = &sushi;
@@ -18,4 +18,9 @@ pub fn raw_test() {
     unsafe {
         println!("{}", *sushi_ref);
     }
+}
+
+pub fn smart_pointer() {
+    let my_box = Box::new(100);
+    println!("{:#?}", my_box)
 }
