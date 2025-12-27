@@ -1,5 +1,3 @@
-use crate::linked_list;
-
 #[derive(Debug)]
 pub enum LinkedList {
     Empty,

@@ -42,13 +42,40 @@ impl BinarySearchTree {
             BinarySearchTree::Empty => false,
             BinarySearchTree::Node { value, left, right } => match target.cmp(value) {
                 Ordering::Equal => true,
-                Ordering::Greater => {
-                    right.contains(target)
-                }
-                Ordering::Less => {
-                    left.contains(target)
-                }
+                Ordering::Greater => right.contains(target),
+                Ordering::Less => left.contains(target),
             },
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn contains_method_should_return_true() {
+        let mut binary_search_tree = BinarySearchTree::new();
+
+        binary_search_tree.insert(5);
+
+        binary_search_tree.insert(2);
+
+        binary_search_tree.insert(8);
+
+        assert!(binary_search_tree.contains(5));
+    }
+
+    #[test]
+    fn contains_method_should_return_false() {
+        let mut binary_search_tree = BinarySearchTree::new();
+
+        binary_search_tree.insert(5);
+
+        binary_search_tree.insert(2);
+
+        binary_search_tree.insert(8);
+
+        assert!(!binary_search_tree.contains(15));
     }
 }
