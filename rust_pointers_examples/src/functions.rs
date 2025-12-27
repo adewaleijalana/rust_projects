@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::{linked_list::LinkedList, music_playlist_item::MusicPlaylistItem};
 
 pub fn test_fn() {
@@ -79,4 +81,11 @@ pub fn music_playlist_method() {
         next_music_item = music_item.next_track
     }
     
+}
+
+
+pub fn print_value<T: Display>(arr: &[T]) {
+    for t in arr {
+        println!("{}", t)
+    }
 }
