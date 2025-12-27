@@ -26,5 +26,7 @@ fn main() {
 
     println!("{:#?}", binary_search_tree);
 
-    println!("{}", binary_search_tree.contains(5))
+    println!("{}", binary_search_tree.contains(5));
+
+    println!("{}", binary_search_tree.contains(15))
 }
