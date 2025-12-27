@@ -1,3 +1,5 @@
+use crate::{linked_list::LinkedList, music_playlist_item::MusicPlaylistItem};
+
 pub fn test_fn() {
     let mut sushi = String::from("Yellowtail");
     let sushi_ref = &mut sushi;
@@ -23,4 +25,58 @@ pub fn raw_pointer_test() {
 pub fn smart_pointer() {
     let my_box = Box::new(100);
     println!("{:#?}", my_box)
+}
+
+pub fn linked_list_test() {
+
+    let list_1 = LinkedList::Node {
+        value: 1,
+        next: Box::new(LinkedList::Node {
+            value: 2,
+            next: Box::new(LinkedList::Node {
+                value: 3,
+                next: Box::new(LinkedList::Empty),
+            }),
+        }),
+    };
+
+    println!("{:?}", list_1);
+    
+}
+
+pub fn music_playlist_method() {
+
+    let music_playlist_item_3 = MusicPlaylistItem {
+        artist: String::from("Artist 3"),
+        name: String::from("Song 3"),
+        next_track: None,
+    };
+
+    // println!("next track: {:#?}", music_playlist_item_3.next_track);
+    // println!("");
+
+    let music_playlist_item_2 = MusicPlaylistItem {
+        artist: String::from("Artist 2"),
+        name: String::from("Song 2"),
+        next_track: Some(&music_playlist_item_3),
+    };
+
+    // println!("next track: {:#?}", music_playlist_item_2.next_track);
+    // println!("");
+
+    let music_playlist_item_1 = MusicPlaylistItem {
+        artist: String::from("Artist 1"),
+        name: String::from("Song 1"),
+        next_track: Some(&music_playlist_item_2),
+    };
+
+    println!("{:#?}", music_playlist_item_1);
+
+    let mut next_music_item = music_playlist_item_1.next_track;
+
+    while let Some(music_item) = next_music_item {
+        println!("next track: {:#?}", music_item);
+        next_music_item = music_item.next_track
+    }
+    
 }
