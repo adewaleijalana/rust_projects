@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use crate::{linked_list::LinkedList, music_playlist_item::MusicPlaylistItem};
+use crate::{clothings::{pants::Pants, tie::{self, Tie}, wearable::{self, Wearable}}, linked_list::LinkedList, music_playlist_item::MusicPlaylistItem};
 
 pub fn test_fn() {
     let mut sushi = String::from("Yellowtail");
@@ -87,5 +87,17 @@ pub fn music_playlist_method() {
 pub fn print_value<T: Display>(arr: &[T]) {
     for t in arr {
         println!("{}", t)
+    }
+}
+
+pub fn wearables() -> Vec<Box<dyn Wearable>>{
+    let pant = Pants::new("Cotton".to_string(), 32);
+    let tie = Tie::new("Blue".to_string());
+    vec![Box::new(pant), Box::new(tie)]
+}
+
+pub fn wearables_ref(wearables: Vec<&dyn Wearable>){
+    for wearable in wearables {
+        println!("{}", wearable.wear());
     }
 }
