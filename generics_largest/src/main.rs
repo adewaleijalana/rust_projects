@@ -36,6 +36,22 @@ fn notify(item: &impl Summary){
     println!("{}", item.summarize_author())
 }
 
+fn notify_2(item: &impl Summary) -> &impl Summary{
+    item
+}
+
+fn notify_3 <T: Summary>(item: &T) -> &T{
+    item
+}
+
+fn notify_4(item: Box<dyn Summary>) -> Box<dyn Summary>{
+    item
+}
+
+fn notify_5(item: Box<&dyn Summary>) -> Box<&dyn Summary>{
+    item
+}
+
 struct Tweet {
     username: String
 }
