@@ -1,6 +1,19 @@
-use std::fmt::Display;
+use std::{
+    error::Error,
+    fmt::Display,
+    fs,
+    io::{self, Error as IoError},
+};
 
-use crate::{clothings::{pants::Pants, tie::{self, Tie}, wearable::{self, Wearable}}, linked_list::LinkedList, music_playlist_item::MusicPlaylistItem};
+use crate::{
+    clothings::{
+        pants::Pants,
+        tie::{self, Tie},
+        wearable::{self, Wearable},
+    },
+    linked_list::LinkedList,
+    music_playlist_item::MusicPlaylistItem,
+};
 
 pub fn test_fn() {
     let mut sushi = String::from("Yellowtail");
@@ -30,7 +43,6 @@ pub fn smart_pointer() {
 }
 
 pub fn linked_list_test() {
-
     let list_1 = LinkedList::Node {
         value: 1,
         next: Box::new(LinkedList::Node {
@@ -43,11 +55,9 @@ pub fn linked_list_test() {
     };
 
     println!("{:?}", list_1);
-    
 }
 
 pub fn music_playlist_method() {
-
     let music_playlist_item_3 = MusicPlaylistItem {
         artist: String::from("Artist 3"),
         name: String::from("Song 3"),
@@ -80,9 +90,7 @@ pub fn music_playlist_method() {
         println!("next track: {:#?}", music_item);
         next_music_item = music_item.next_track
     }
-    
 }
-
 
 pub fn print_value<T: Display>(arr: &[T]) {
     for t in arr {
@@ -90,14 +98,45 @@ pub fn print_value<T: Display>(arr: &[T]) {
     }
 }
 
-pub fn wearables() -> Vec<Box<dyn Wearable>>{
+pub fn wearables() -> Vec<Box<dyn Wearable>> {
     let pant = Pants::new("Cotton".to_string(), 32);
     let tie = Tie::new("Blue".to_string());
     vec![Box::new(pant), Box::new(tie)]
 }
 
-pub fn wearables_ref(wearables: Vec<&dyn Wearable>){
+pub fn wearables_ref(wearables: Vec<&dyn Wearable>) {
     for wearable in wearables {
         println!("{}", wearable.wear());
     }
+}
+
+pub fn read_number_from_file(path: &str) -> Result<i32, io::Error> {
+    let file_content = fs::read_to_string(path)?;
+    let parse_number = file_content
+        .parse::<i32>()
+        .map_err(|e| IoError::new(std::io::ErrorKind::InvalidData, e))?;
+
+    Ok(parse_number)
+}
+
+pub fn read_number_from_file_2(path: &str) -> Result<i32, Box<dyn Error>> {
+    let file_content = fs::read_to_string(path)?;
+    let parse_number = file_content.parse::<i32>()?;
+
+    Ok(parse_number)
+}
+
+
+pub fn read_number_from_file_4(path: &str) -> Result<i32, Box<dyn Error>> {
+    let file_content = match fs::read_to_string(path) {
+        Ok(content) => content,
+        Err(error) => return Err(Box::new(error))
+    };
+    
+    let parse_number = match file_content.parse::<i32>(){
+        Ok(num) => num,
+        Err(error) => return Err(Box::new(error))
+    };
+
+    Ok(parse_number)
 }

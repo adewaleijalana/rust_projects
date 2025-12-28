@@ -37,9 +37,15 @@ fn main() {
     // println!();
     // print_value(arr_deff);
 
-    let pant = Pants::new("Cotton".to_string(), 32);
-    let tie = Tie::new("Blue".to_string());
-    let wearables: Vec<&dyn Wearable> = vec![&pant, &tie];
+    // let pant = Pants::new("Cotton".to_string(), 32);
+    // let tie = Tie::new("Blue".to_string());
+    // let wearables: Vec<&dyn Wearable> = vec![&pant, &tie];
 
-    wearables_ref(wearables);
+    // wearables_ref(wearables);
+
+    match read_number_from_file_4("value.txt"){
+        Ok(value) => println!("The value is {}", value),
+        Err(error) => println!("The error is: {error}")
+        
+    }
 }
