@@ -10,7 +10,20 @@ impl BasicAuth {
         Self { username, password }
     }
 
-    pub fn from_base64_encoded(base64_string: &str) -> Option<BasicAuth> {
+    pub fn decode_authorization_header(header: &str) -> Option<BasicAuth> {
+        let split_str = header.split_whitespace().collect::<Vec<_>>();
+        if split_str.len() != 2 {
+            return None;
+        }
+
+        if split_str[0] != "Basic" {
+            return None;
+        }
+
+        Self::from_base64_encoded(split_str[1])
+    }
+
+    fn from_base64_encoded(base64_string: &str) -> Option<BasicAuth> {
         let decoded_bytes = BASE64_STANDARD.decode(base64_string).ok()?;
         let decoded_string = String::from_utf8(decoded_bytes).ok()?;
 
