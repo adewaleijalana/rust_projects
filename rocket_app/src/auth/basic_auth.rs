@@ -1,4 +1,5 @@
 use base64::{Engine, prelude::BASE64_STANDARD};
+use rocket::{http::Status, request::{FromRequest, Outcome, Request}};
 
 pub struct BasicAuth {
     username: String,
@@ -37,5 +38,23 @@ impl BasicAuth {
             username: split_str[0].to_string(),
             password: split_str[1].to_string(),
         })
+    }
+}
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for BasicAuth {
+    type Error = ();
+
+    async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
+        let auth_header = req.headers().get_one("Authorization");
+
+        if let Some(auth_header) = auth_header {
+            println!("Authorization: {}", auth_header);
+            if let Some(auth) =  Self::decode_authorization_header(auth_header){
+                return Outcome::Success(auth);
+            }
+        }
+
+        Outcome::Error((Status::Unauthorized, ()))
     }
 }
