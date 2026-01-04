@@ -3,6 +3,7 @@
 #[macro_use]
 extern crate rocket;
 
+mod auth;
 mod routes;
 
 use routes::users::users_routes::{
