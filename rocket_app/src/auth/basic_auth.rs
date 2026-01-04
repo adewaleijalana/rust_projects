@@ -1,5 +1,10 @@
 use base64::{Engine, prelude::BASE64_STANDARD};
-use rocket::{http::Status, request::{FromRequest, Outcome, Request}};
+use dotenv::dotenv;
+use rocket::{
+    http::Status,
+    request::{FromRequest, Outcome, Request},
+};
+use std::env;
 
 pub struct BasicAuth {
     username: String,
@@ -48,10 +53,16 @@ impl<'r> FromRequest<'r> for BasicAuth {
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
         let auth_header = req.headers().get_one("Authorization");
 
+        dotenv().ok();
+
         if let Some(auth_header) = auth_header {
             println!("Authorization: {}", auth_header);
-            if let Some(auth) =  Self::decode_authorization_header(auth_header){
-                return Outcome::Success(auth);
+            if let Some(auth) = Self::decode_authorization_header(auth_header) {
+                let username = env::var("TEST_USERNAME").expect("Error getting username");
+                let password = env::var("TEST_PASSWORD").expect("Error getting password");
+                if auth.username == username && auth.password == password {
+                    return Outcome::Success(auth);
+                }
             }
         }
 
