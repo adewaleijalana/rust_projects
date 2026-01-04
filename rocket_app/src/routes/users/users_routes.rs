@@ -3,29 +3,29 @@ use rocket::{
     serde::json::{Value, json},
 };
 
-use crate::auth::basic_auth::BasicAuth;
+use crate::{auth::basic_auth::BasicAuth, db::db_conn::DBConn};
 
 #[get("/users")]
-pub fn get_users(auth: BasicAuth) -> Value {
+pub fn get_users(auth: BasicAuth, db: DBConn) -> Value {
     json!([{"id": 1, "name": "Tester 1"}, {"id": 2, "name": "Tester 2"}])
 }
 
 #[get("/users/<id>")]
-pub fn get_users_by_id(id: u32, auth: BasicAuth) -> Value {
+pub fn get_users_by_id(id: u32, auth: BasicAuth, db: DBConn) -> Value {
     json!([{"id": 1, "name": "Tester 1"}])
 }
 
 #[post("/users", format = "json")]
-pub fn add_user(auth: BasicAuth) -> Value {
+pub fn add_user(auth: BasicAuth, db: DBConn) -> Value {
     json!([{"id": 3, "name": "Tester 1"}])
 }
 
 #[put("/users/<id>", format = "json")]
-pub fn update_user(id: u32, auth: BasicAuth) -> Value {
+pub fn update_user(id: u32, auth: BasicAuth, db: DBConn) -> Value {
     json!([{"id": id, "name": "Tester 1"}])
 }
 
 #[delete("/users/<id>")]
-pub fn delete_users_by_id(id: u32, auth: BasicAuth) -> status::NoContent {
+pub fn delete_users_by_id(id: u32, auth: BasicAuth, db: DBConn) -> status::NoContent {
     status::NoContent
 }

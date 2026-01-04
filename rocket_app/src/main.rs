@@ -4,6 +4,7 @@
 extern crate rocket;
 
 mod auth;
+mod db;
 mod routes;
 
 use routes::users::users_routes::{
@@ -11,6 +12,8 @@ use routes::users::users_routes::{
 };
 
 use routes::errors::errors_handlers::{not_found, un_authorized};
+
+use crate::db::db_conn::DBConn;
 
 #[get("/")]
 fn index() -> &'static str {
@@ -32,6 +35,7 @@ async fn main() {
             ],
         )
         .register("/", catchers![not_found, un_authorized])
+        .attach(DBConn::fairing())
         .launch()
         .await;
 }
