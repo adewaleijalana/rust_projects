@@ -1,13 +1,25 @@
+use diesel::prelude::*;
 use rocket::{
     response::status,
     serde::json::{Value, json},
 };
+// use serde_json::json;
 
 use crate::{auth::basic_auth::BasicAuth, db::db_conn::DBConn};
+use crate::{models::user::User, schema::users};
 
 #[get("/users")]
-pub fn get_users(auth: BasicAuth, db: DBConn) -> Value {
-    json!([{"id": 1, "name": "Tester 1"}, {"id": 2, "name": "Tester 2"}])
+pub async fn get_users(auth: BasicAuth, db: DBConn) -> Value {
+    db.run(|conn| {
+        let users = users::table
+            .order(users::id.asc())
+            .limit(1000)
+            .load::<User>(conn)
+            .expect("Error fetching users");
+
+        json!(users)
+    })
+    .await
 }
 
 #[get("/users/<id>")]
