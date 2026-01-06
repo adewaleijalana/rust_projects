@@ -1,13 +1,14 @@
 use diesel::prelude::*;
 use rocket::{
+    execute,
     response::status,
     serde::json::{Json, Value, json},
 };
 
-
 use crate::{
-    auth::basic_auth::BasicAuth, db::db_conn::DBConn,
-    exchanges::requests::user_request::UserRequest,
+    auth::basic_auth::BasicAuth,
+    db::db_conn::DBConn,
+    exchanges::requests::{update_user_request::UpdateUserRequest, user_request::UserRequest},
 };
 use crate::{models::user::User, schema::users};
 
@@ -27,7 +28,6 @@ pub async fn get_users(auth: BasicAuth, db: DBConn) -> Value {
 
 #[get("/users/<id>")]
 pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Value {
-
     db.run(move |conn| {
         let user = users::table
             .filter(users::id.eq(id))
@@ -35,7 +35,8 @@ pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Value {
             .expect("Error fetching user using id");
 
         json!(user)
-    }).await
+    })
+    .await
 }
 
 #[post("/users", format = "json", data = "<new_user_request>")]
@@ -47,12 +48,27 @@ pub async fn add_user(auth: BasicAuth, new_user_request: Json<UserRequest>, db: 
             .expect("Error creating user");
 
         json!(result)
-    }).await
+    })
+    .await
 }
 
-#[put("/users/<id>", format = "json")]
-pub fn update_user(id: i32, auth: BasicAuth, db: DBConn) -> Value {
-    json!([{"id": id, "name": "Tester 1"}])
+#[put("/users/<id>", format = "json", data = "<update_user_request>")]
+pub async fn update_user(
+    id: i32,
+    auth: BasicAuth,
+    update_user_request: Json<UpdateUserRequest>,
+    db: DBConn,
+) -> Value {
+    db.run(move |conn| {
+        let result = diesel::update(users::table)
+            .filter(users::id.eq(id))
+            .set(update_user_request.into_inner())
+            .execute(conn)
+            .expect("Error updating user");
+
+        json!(result)
+    })
+    .await
 }
 
 #[delete("/users/<id>")]
