@@ -3,7 +3,7 @@ use rocket::{
     response::status,
     serde::json::{Json, Value, json},
 };
-// use serde_json::json;
+
 
 use crate::{
     auth::basic_auth::BasicAuth, db::db_conn::DBConn,
@@ -26,8 +26,16 @@ pub async fn get_users(auth: BasicAuth, db: DBConn) -> Value {
 }
 
 #[get("/users/<id>")]
-pub fn get_users_by_id(id: u32, auth: BasicAuth, db: DBConn) -> Value {
-    json!([{"id": 1, "name": "Tester 1"}])
+pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Value {
+
+    db.run(move |conn| {
+        let user = users::table
+            .filter(users::id.eq(id))
+            .first::<User>(conn)
+            .expect("Error fetching user using id");
+
+        json!(user)
+    }).await
 }
 
 #[post("/users", format = "json", data = "<new_user_request>")]
@@ -43,11 +51,11 @@ pub async fn add_user(auth: BasicAuth, new_user_request: Json<UserRequest>, db: 
 }
 
 #[put("/users/<id>", format = "json")]
-pub fn update_user(id: u32, auth: BasicAuth, db: DBConn) -> Value {
+pub fn update_user(id: i32, auth: BasicAuth, db: DBConn) -> Value {
     json!([{"id": id, "name": "Tester 1"}])
 }
 
 #[delete("/users/<id>")]
-pub fn delete_users_by_id(id: u32, auth: BasicAuth, db: DBConn) -> status::NoContent {
+pub fn delete_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> status::NoContent {
     status::NoContent
 }
