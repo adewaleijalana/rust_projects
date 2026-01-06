@@ -5,6 +5,7 @@ extern crate rocket;
 
 mod auth;
 mod db;
+mod exchanges;
 mod models;
 mod routes;
 mod schema;
