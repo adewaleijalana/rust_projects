@@ -14,7 +14,7 @@ use routes::users::users_routes::{
     add_user, delete_users_by_id, get_users, get_users_by_id, update_user,
 };
 
-use routes::errors::errors_handlers::{not_found, un_authorized};
+use routes::errors::errors_handlers::{not_found, un_authorized, unprocessable_entity};
 
 use crate::db::db_conn::DBConn;
 
@@ -37,7 +37,10 @@ async fn main() {
                 delete_users_by_id
             ],
         )
-        .register("/", catchers![not_found, un_authorized])
+        .register(
+            "/",
+            catchers![not_found, un_authorized, unprocessable_entity],
+        )
         .attach(DBConn::fairing())
         .launch()
         .await;

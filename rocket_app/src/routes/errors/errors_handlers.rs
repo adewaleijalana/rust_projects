@@ -12,3 +12,8 @@ pub fn not_found(_req: &Request) -> Value {
 pub fn un_authorized(_req: &Request) -> Value {
     json!({"message": "Unauthorized"})
 }
+
+#[catch(422)]
+pub fn  unprocessable_entity(_req: &Request) -> Value {
+    json!({"message": "Unauthorized"})
+}
