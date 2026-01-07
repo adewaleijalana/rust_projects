@@ -9,18 +9,28 @@ use crate::{
     auth::basic_auth::BasicAuth,
     db::db_conn::DBConn,
     exchanges::requests::{update_user_request::UpdateUserRequest, user_request::UserRequest},
+    repositories::{
+        base_repository::BaseRepository,
+        user_repository::{self, UserRepository},
+    },
 };
 use crate::{models::user::User, schema::users};
 
 #[get("/users")]
 pub async fn get_users(auth: BasicAuth, db: DBConn) -> Value {
-    db.run(|conn| {
-        let users = users::table
-            .order(users::id.asc())
-            .limit(1000)
-            .load::<User>(conn)
-            .expect("Error fetching users");
+    // db.run(|conn| {
+    //     let users = users::table
+    //         .order(users::id.asc())
+    //         .limit(1000)
+    //         .load::<User>(conn)
+    //         .expect("Error fetching users");
 
+    //     json!(users)
+    // })
+    // .await
+
+    db.run(|conn| {
+        let users = UserRepository::find_all(conn, 100).expect("Error fetching users");
         json!(users)
     })
     .await
@@ -78,6 +88,7 @@ pub async fn delete_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> status:
             .filter(users::id.eq(id))
             .execute(conn)
             .expect("Error deleting record")
-    }).await;
+    })
+    .await;
     status::NoContent
 }

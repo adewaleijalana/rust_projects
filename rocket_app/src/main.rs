@@ -7,9 +7,9 @@ mod auth;
 mod db;
 mod exchanges;
 mod models;
+mod repositories;
 mod routes;
 mod schema;
-mod repositories;
 
 use routes::users::users_routes::{
     add_user, delete_users_by_id, get_users, get_users_by_id, update_user,
