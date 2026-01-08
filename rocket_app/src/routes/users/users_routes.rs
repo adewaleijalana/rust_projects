@@ -38,11 +38,18 @@ pub async fn get_users(auth: BasicAuth, db: DBConn) -> Value {
 
 #[get("/users/<id>")]
 pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Value {
+    // db.run(move |conn| {
+    //     let user = users::table
+    //         .filter(users::id.eq(id))
+    //         .first::<User>(conn)
+    //         .expect("Error fetching user using id");
+
+    //     json!(user)
+    // })
+    // .await
+
     db.run(move |conn| {
-        let user = users::table
-            .filter(users::id.eq(id))
-            .first::<User>(conn)
-            .expect("Error fetching user using id");
+        let user = UserRepository::find_by_id(id, conn).expect("Error fetching user using id");
 
         json!(user)
     })
