@@ -21,6 +21,7 @@ impl BaseRepository<User> for UserRepository {
     }
 
     fn delete_by_id(id: i32, conn: &mut SqliteConnection) -> QueryResult<usize> {
+        Self::find_by_id(id, conn)?;
         diesel::delete(users::table)
             .filter(users::id.eq(id))
             .execute(conn)

@@ -111,11 +111,12 @@ pub async fn delete_users_by_id(
     db: DBConn,
 ) -> Result<status::NoContent, Custom<Value>> {
     db.run(move |conn| {
-        diesel::delete(users::table)
-            .filter(users::id.eq(id))
-            .execute(conn)
+        UserRepository::delete_by_id(id, conn)
             .map(|_| status::NoContent)
-            .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
+            .map_err(|e| match e {
+                NotFound => Custom(Status::NotFound, json!({"message" : e.to_string()})),
+                _ => Custom(Status::InternalServerError, json!(e.to_string())),
+            })
     })
     .await
 }
