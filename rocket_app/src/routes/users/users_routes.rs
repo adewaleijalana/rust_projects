@@ -1,4 +1,4 @@
-use diesel::prelude::*;
+use diesel::{prelude::*, result::Error::NotFound};
 use rocket::{
     execute,
     http::Status,
@@ -54,7 +54,10 @@ pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Result<Val
     db.run(move |conn| {
         UserRepository::find_by_id(id, conn)
             .map(|user| json!(user))
-            .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
+            .map_err(|e| match e {
+                NotFound => Custom(Status::NotFound, json!({"message" : e.to_string()})),
+                _ => Custom(Status::InternalServerError, json!(e.to_string())),
+            })
     })
     .await
 }
@@ -102,14 +105,17 @@ pub async fn update_user(
 }
 
 #[delete("/users/<id>")]
-pub async fn delete_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Result<status::NoContent, Custom<Value>>  {
+pub async fn delete_users_by_id(
+    id: i32,
+    auth: BasicAuth,
+    db: DBConn,
+) -> Result<status::NoContent, Custom<Value>> {
     db.run(move |conn| {
         diesel::delete(users::table)
             .filter(users::id.eq(id))
             .execute(conn)
-            .map(|affected_rows| status::NoContent)
+            .map(|_| status::NoContent)
             .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
     })
     .await
-    
 }
