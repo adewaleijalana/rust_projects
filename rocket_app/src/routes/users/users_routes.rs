@@ -10,6 +10,7 @@ use crate::{
     db::db_conn::DBConn,
     exchanges::requests::{update_user_request::UpdateUserRequest, user_request::UserRequest},
     repositories::{
+        base_create_repository::BaseCreateRepository,
         base_repository::BaseRepository,
         user_repository::{self, UserRepository},
     },
@@ -58,12 +59,20 @@ pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Value {
 
 #[post("/users", format = "json", data = "<new_user_request>")]
 pub async fn add_user(auth: BasicAuth, new_user_request: Json<UserRequest>, db: DBConn) -> Value {
-    db.run(|conn| {
-        let result = diesel::insert_into(users::table)
-            .values(new_user_request.into_inner())
-            .execute(conn)
-            .expect("Error creating user");
+    // db.run(|conn| {
+    //     let result = diesel::insert_into(users::table)
+    //         .values(new_user_request.into_inner())
+    //         .execute(conn)
+    //         .expect("Error creating user");
 
+    //     json!(result)
+    // })
+    // .await
+
+    db.run(|conn| {
+        let result =
+            UserRepository::save(conn, new_user_request.into_inner()).expect("Error creating user");
+            
         json!(result)
     })
     .await
