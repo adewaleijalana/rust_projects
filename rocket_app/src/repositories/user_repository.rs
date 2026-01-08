@@ -31,8 +31,9 @@ impl BaseCreateRepository<User, UserRequest, users::table> for UserRepository {
     fn save(conn: &mut SqliteConnection, new_entity: UserRequest) -> QueryResult<User> {
         diesel::insert_into(users::table)
             .values(new_entity)
-            .execute(conn);
-        let id = Self::last_inserted_id(conn, users::table).expect("Error fetching using id");
+            .execute(conn)?;
+
+        let id = Self::last_inserted_id(conn, users::table)?;
 
         Self::find_by_id(id, conn)
     }
