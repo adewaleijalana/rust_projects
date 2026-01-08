@@ -102,13 +102,14 @@ pub async fn update_user(
 }
 
 #[delete("/users/<id>")]
-pub async fn delete_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> status::NoContent {
+pub async fn delete_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Result<status::NoContent, Custom<Value>>  {
     db.run(move |conn| {
         diesel::delete(users::table)
             .filter(users::id.eq(id))
             .execute(conn)
-            .expect("Error deleting record")
+            .map(|affected_rows| status::NoContent)
+            .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
     })
-    .await;
-    status::NoContent
+    .await
+    
 }
