@@ -1,7 +1,8 @@
 use diesel::prelude::*;
 use rocket::{
     execute,
-    response::status,
+    http::Status,
+    response::status::{self, Custom},
     serde::json::{Json, Value, json},
 };
 
@@ -18,7 +19,7 @@ use crate::{
 use crate::{models::user::User, schema::users};
 
 #[get("/users")]
-pub async fn get_users(auth: BasicAuth, db: DBConn) -> Value {
+pub async fn get_users(auth: BasicAuth, db: DBConn) -> Result<Value, Custom<Value>> {
     // db.run(|conn| {
     //     let users = users::table
     //         .order(users::id.asc())
@@ -31,14 +32,15 @@ pub async fn get_users(auth: BasicAuth, db: DBConn) -> Value {
     // .await
 
     db.run(|conn| {
-        let users = UserRepository::find_all(conn, 100).expect("Error fetching users");
-        json!(users)
+        UserRepository::find_all(conn, 100)
+            .map(|users| json!(users))
+            .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
     })
     .await
 }
 
 #[get("/users/<id>")]
-pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Value {
+pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Result<Value, Custom<Value>> {
     // db.run(move |conn| {
     //     let user = users::table
     //         .filter(users::id.eq(id))
@@ -50,15 +52,19 @@ pub async fn get_users_by_id(id: i32, auth: BasicAuth, db: DBConn) -> Value {
     // .await
 
     db.run(move |conn| {
-        let user = UserRepository::find_by_id(id, conn).expect("Error fetching user using id");
-
-        json!(user)
+        UserRepository::find_by_id(id, conn)
+            .map(|user| json!(user))
+            .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
     })
     .await
 }
 
 #[post("/users", format = "json", data = "<new_user_request>")]
-pub async fn add_user(auth: BasicAuth, new_user_request: Json<UserRequest>, db: DBConn) -> Value {
+pub async fn add_user(
+    auth: BasicAuth,
+    new_user_request: Json<UserRequest>,
+    db: DBConn,
+) -> Result<Value, Custom<Value>> {
     // db.run(|conn| {
     //     let result = diesel::insert_into(users::table)
     //         .values(new_user_request.into_inner())
@@ -70,10 +76,9 @@ pub async fn add_user(auth: BasicAuth, new_user_request: Json<UserRequest>, db: 
     // .await
 
     db.run(|conn| {
-        let result =
-            UserRepository::save(conn, new_user_request.into_inner()).expect("Error creating user");
-            
-        json!(result)
+        UserRepository::save(conn, new_user_request.into_inner())
+            .map(|user| json!(user))
+            .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
     })
     .await
 }
@@ -84,15 +89,14 @@ pub async fn update_user(
     auth: BasicAuth,
     update_user_request: Json<UpdateUserRequest>,
     db: DBConn,
-) -> Value {
+) -> Result<Value, Custom<Value>> {
     db.run(move |conn| {
-        let result = diesel::update(users::table)
+        diesel::update(users::table)
             .filter(users::id.eq(id))
             .set(update_user_request.into_inner())
             .execute(conn)
-            .expect("Error updating user");
-
-        json!(result)
+            .map(|affected_rows| json!(affected_rows))
+            .map_err(|e| Custom(Status::InternalServerError, json!(e.to_string())))
     })
     .await
 }
