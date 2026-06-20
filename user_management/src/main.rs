@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use axum::{
     Router,
     routing::{get, post},
