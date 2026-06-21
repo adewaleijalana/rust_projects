@@ -7,3 +7,11 @@ authors = ["Adewale Ijalana <adewaleijalana@gmail.com>"]
 [dependencies]
 clap = { version = "4.6.1", features = ["cargo"] }
 regex = "1.12.4"
+
+[lib]
+name = "grep_lite"
+path = "src/lib.rs"
+
+[[bin]]
+name = "grep-lite"
+path = "src/main.rs"
