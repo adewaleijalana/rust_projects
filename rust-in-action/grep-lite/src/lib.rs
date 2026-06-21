@@ -12,13 +12,10 @@ pub fn process_lines<T: BufRead + Sized>(reader: T, search_reg: Regex) {
         let line = line_.unwrap();
         let contain_substring = search_reg.find(&line);
 
-        match contain_substring {
-            Some(_) => {
-                println!();
-                println!();
-                println!("{}", line)
-            }
-            None => (),
+        if contain_substring.is_some() {
+            println!();
+            println!();
+            println!("{}", line);
         }
     }
 }
