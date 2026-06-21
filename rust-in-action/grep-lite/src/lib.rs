@@ -1,7 +1,11 @@
+#![allow(dead_code, unused_variables, unused_imports)]
+
 use clap::{Arg, command};
 use regex::Regex;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
+
+pub mod file;
 
 pub fn process_lines<T: BufRead + Sized>(reader: T, search_reg: Regex) {
     for line_ in reader.lines() {
@@ -12,14 +16,15 @@ pub fn process_lines<T: BufRead + Sized>(reader: T, search_reg: Regex) {
             Some(_) => {
                 println!();
                 println!();
-                println!("{}", line)},
+                println!("{}", line)
+            }
             None => (),
         }
     }
 }
 
-pub fn reader_args(){
-  let args = command!()
+pub fn reader_args() {
+    let args = command!()
         .version("0.1")
         .about("searches for patterns")
         .arg(
