@@ -6,6 +6,7 @@ authors = ["Adewale Ijalana <adewaleijalana@gmail.com>"]
 
 [dependencies]
 clap = { version = "4.6.1", features = ["cargo"] }
+rand = "0.10.1"
 regex = "1.12.4"
 
 [lib]

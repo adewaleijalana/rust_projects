@@ -1,3 +1,9 @@
+use rand::{prelude::*, rng};
+
+fn one_in(denominator: u32) -> bool {
+    rng().random_ratio(1, denominator)
+}
+
 #[derive(Debug)]
 pub struct File {
     name: String,
@@ -16,13 +22,13 @@ impl File {
         self.name.clone()
     }
 
-    pub fn read(&self, save_to: &mut Vec<u8>) -> usize {
+    pub fn read(&self, save_to: &mut Vec<u8>) -> Result<usize, String> {
         let mut tmp = self.data.clone();
         let read_length = tmp.len();
 
         save_to.reserve(read_length);
         save_to.append(&mut tmp);
-        read_length
+        Ok(read_length)
     }
 
     pub fn new_with_data(name: &str, data: &Vec<u8>) -> File {
@@ -32,10 +38,18 @@ impl File {
     }
 }
 
-pub fn open(f: &mut File) -> bool {
-    true
+pub fn open(f: File) -> Result<File, String> {
+    if one_in(10_000) {
+        let err_msg = String::from("Permission denied");
+        return Err(err_msg);
+    }
+    Ok(f)
 }
 
-pub fn close(f: &mut File) -> bool {
-    true
+pub fn close(f: File) -> Result<File, String> {
+    if one_in(10_000) {
+        let err_msg = String::from("Permission denied");
+        return Err(err_msg);
+    }
+    Ok(f)
 }
