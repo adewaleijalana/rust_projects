@@ -4,10 +4,17 @@ fn one_in(denominator: u32) -> bool {
     rng().random_ratio(1, denominator)
 }
 
+#[derive(Debug, PartialEq)]
+enum FileState {
+    Open,
+    Closed,
+}
+
 #[derive(Debug)]
 pub struct File {
     name: String,
     data: Vec<u8>,
+    state: FileState,
 }
 
 impl File {
@@ -15,6 +22,7 @@ impl File {
         Self {
             name: String::from(name),
             data: Vec::new(),
+            state: FileState::Closed,
         }
     }
 
@@ -23,6 +31,9 @@ impl File {
     }
 
     pub fn read(&self, save_to: &mut Vec<u8>) -> Result<usize, String> {
+        if self.state != FileState::Open {
+            return Err(String::from("File must be open for reading"));
+        }
         let mut tmp = self.data.clone();
         let read_length = tmp.len();
 
@@ -38,18 +49,12 @@ impl File {
     }
 }
 
-pub fn open(f: File) -> Result<File, String> {
-    if one_in(10_000) {
-        let err_msg = String::from("Permission denied");
-        return Err(err_msg);
-    }
+pub fn open(mut f: File) -> Result<File, String> {
+    f.state = FileState::Open;
     Ok(f)
 }
 
-pub fn close(f: File) -> Result<File, String> {
-    if one_in(10_000) {
-        let err_msg = String::from("Permission denied");
-        return Err(err_msg);
-    }
+pub fn close(mut f: File) -> Result<File, String> {
+    f.state = FileState::Open;
     Ok(f)
 }
