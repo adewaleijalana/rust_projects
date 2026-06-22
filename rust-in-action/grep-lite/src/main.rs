@@ -6,11 +6,13 @@ use grep_lite::reader_args;
 fn main() {
     // reader_args()
 
-    let f3_data = vec![114, 117, 115, 116, 33];
-
-    let mut f3 = File::new_with_data("2.txt", &f3_data);
+    let mut f3 = File::new("2.txt");
 
     let mut buffer: Vec<u8> = vec![];
+
+    if f3.read(&mut buffer).is_err() {
+        println!("Error checking is working");
+    }
 
     f3 = open(f3).unwrap();
     let f2_length = f3.read(&mut buffer).unwrap();
