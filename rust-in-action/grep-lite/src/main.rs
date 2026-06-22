@@ -8,16 +8,16 @@ fn main() {
 
     let f3_data = vec![114, 117, 115, 116, 33];
 
-    let mut f1 = File::new_with_data("2.txt", &f3_data);
+    let mut f3 = File::new_with_data("2.txt", &f3_data);
 
     let mut buffer: Vec<u8> = vec![];
 
-    open(&mut f1);
-    let f2_length = f1.read(&mut buffer);
-    close(&mut f1);
+    f3 = open(f3).unwrap();
+    let f2_length = f3.read(&mut buffer).unwrap();
+    f3 = close(f3).unwrap();
 
     let text = String::from_utf8_lossy(&buffer);
-    println!("{:?}", f1);
-    println!("{} is {} bytes long", &f1.get_name(), f2_length);
+    println!("{:?}", f3);
+    println!("{} is {} bytes long", &f3.get_name(), f2_length);
     println!("{}", text)
 }
