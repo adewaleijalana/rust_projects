@@ -1,3 +1,5 @@
+//! Simulating files one step at a time.
+
 use std::fmt::Display;
 
 use rand::{prelude::*, rng};
@@ -8,6 +10,8 @@ fn one_in(denominator: u32) -> bool {
     rng().random_ratio(1, denominator)
 }
 
+/// Represents  "FileState",
+/// which which can either be `Open` or `Closed`.
 #[derive(Debug, PartialEq)]
 enum FileState {
     Open,
@@ -18,10 +22,13 @@ impl Display for FileState {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match *self {
             FileState::Open => write!(formatter, "OPEN"),
-            FileState::Closed => write!(formatter, "CLOSED")
+            FileState::Closed => write!(formatter, "CLOSED"),
         }
     }
 }
+
+/// Represents a "file",
+/// which probably lives on a file system.
 
 #[derive(Debug)]
 pub struct File {
@@ -37,6 +44,15 @@ impl Display for File {
 }
 
 impl File {
+    /// New files are assumed to be empty, but a name is required.
+    ///
+    ///Creates a new, empty `File`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let f = File::new("f1.txt");
+    ///
     pub fn new(name: &str) -> Self {
         Self {
             name: String::from(name),
@@ -45,6 +61,7 @@ impl File {
         }
     }
 
+    /// Returns the file's name.
     pub fn get_name(&self) -> String {
         self.name.clone()
     }

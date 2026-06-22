@@ -21,7 +21,7 @@ fn main() {
 
     let text = String::from_utf8_lossy(&buffer);
     println!("{:?}", f3);
-    println!("{}", f3);
+    println!("{:?}", f3);
     println!("{} is {} bytes long", &f3.get_name(), f2_length);
     println!("{}", text)
 }
