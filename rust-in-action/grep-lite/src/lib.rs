@@ -6,6 +6,7 @@ use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
 pub mod file;
+pub mod read;
 
 pub fn process_lines<T: BufRead + Sized>(reader: T, search_reg: Regex) {
     for line_ in reader.lines() {

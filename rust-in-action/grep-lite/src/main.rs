@@ -1,6 +1,7 @@
 #![allow(dead_code, unused_variables, unused_imports)]
 
 use grep_lite::file::{File, close, open};
+use grep_lite::read::Read;
 use grep_lite::reader_args;
 
 fn main() {
@@ -20,6 +21,7 @@ fn main() {
 
     let text = String::from_utf8_lossy(&buffer);
     println!("{:?}", f3);
+    println!("{}", f3);
     println!("{} is {} bytes long", &f3.get_name(), f2_length);
     println!("{}", text)
 }
