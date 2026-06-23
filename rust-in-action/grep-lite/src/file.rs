@@ -97,8 +97,8 @@ pub fn close(mut f: File) -> Result<File, String> {
     Ok(f)
 }
 
-pub fn file_test(){
-  let mut f3 = File::new("2.txt");
+pub fn file_test() {
+    let mut f3 = File::new("2.txt");
 
     let mut buffer: Vec<u8> = vec![];
 
