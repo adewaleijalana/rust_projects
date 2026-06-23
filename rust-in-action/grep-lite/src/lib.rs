@@ -5,6 +5,7 @@ use regex::Regex;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
+pub mod data_types;
 pub mod file;
 pub mod read;
 pub mod sat;
