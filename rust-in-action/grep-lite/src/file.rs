@@ -96,3 +96,23 @@ pub fn close(mut f: File) -> Result<File, String> {
     f.state = FileState::Open;
     Ok(f)
 }
+
+pub fn file_test(){
+  let mut f3 = File::new("2.txt");
+
+    let mut buffer: Vec<u8> = vec![];
+
+    if f3.read(&mut buffer).is_err() {
+        println!("Error checking is working");
+    }
+
+    f3 = open(f3).unwrap();
+    let f2_length = f3.read(&mut buffer).unwrap();
+    f3 = close(f3).unwrap();
+
+    let text = String::from_utf8_lossy(&buffer);
+    println!("{:?}", f3);
+    println!("{:?}", f3);
+    println!("{} is {} bytes long", &f3.get_name(), f2_length);
+    println!("{}", text)
+}
