@@ -7,9 +7,9 @@ use std::io::{self, BufRead, BufReader};
 
 pub mod data_types;
 pub mod file;
+pub mod q;
 pub mod read;
 pub mod sat;
-pub mod q;
 
 pub fn process_lines<T: BufRead + Sized>(reader: T, search_reg: Regex) {
     for line_ in reader.lines() {

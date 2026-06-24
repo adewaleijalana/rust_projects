@@ -51,7 +51,9 @@ impl File {
     /// # Examples
     ///
     /// ```
+    /// use grep_lite::file::File;
     /// let f = File::new("f1.txt");
+    /// ```
     ///
     pub fn new(name: &str) -> Self {
         Self {
@@ -97,7 +99,7 @@ pub fn close(mut f: File) -> Result<File, String> {
     Ok(f)
 }
 
-pub fn file_test() {
+pub fn file_demo() {
     let mut f3 = File::new("2.txt");
 
     let mut buffer: Vec<u8> = vec![];
