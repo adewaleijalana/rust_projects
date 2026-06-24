@@ -35,3 +35,12 @@ pub fn int_overflow_example() {
         }
     }
 }
+
+pub fn bit_shifting() {
+    for i in 0..23 {
+        let mask = 1 << i;
+        println!("1: {:032b}", 1);
+
+        println!("mask: {} | {:032b}", i, mask)
+    }
+}
