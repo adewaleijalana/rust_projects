@@ -11,7 +11,7 @@ fn main() {
     // file_test();
     // sat_test()
     // int_vs_int();
-    // transmute_test();
+    transmute_test();
     // int_overflow_example();
-    bit_shifting();
+    // bit_shifting();
 }

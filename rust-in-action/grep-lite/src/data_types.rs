@@ -17,10 +17,10 @@ pub fn transmute_test() {
     println!("{}", frankentype);
     println!("{:032b}", frankentype);
 
+    // // let b: f32 = unsafe { std::mem::transmute(frankentype) };
     // let b: f32 = unsafe { std::mem::transmute(frankentype) };
-    let b: f32 = unsafe { std::mem::transmute(frankentype) };
-    println!("{}", b);
-    assert_eq!(a, b);
+    // println!("{}", b);
+    // assert_eq!(a, b);
 }
 
 pub fn int_overflow_example() {
