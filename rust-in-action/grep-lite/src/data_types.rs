@@ -8,9 +8,9 @@ pub fn int_vs_int() {
 
 pub fn transmute_test() {
     let a: f32 = 42.42;
-    // let frankentype: u32 = unsafe { std::mem::transmute(a) }; 
+    // let frankentype: u32 = unsafe { std::mem::transmute(a) };
 
-    let frankentype: u32 = f32::to_bits(a); 
+    let frankentype: u32 = f32::to_bits(a);
 
     //f32::to_bits(a)
 
@@ -18,7 +18,20 @@ pub fn transmute_test() {
     println!("{:032b}", frankentype);
 
     // let b: f32 = unsafe { std::mem::transmute(frankentype) };
-     let b: f32 = unsafe { std::mem::transmute(frankentype) };
+    let b: f32 = unsafe { std::mem::transmute(frankentype) };
     println!("{}", b);
     assert_eq!(a, b);
+}
+
+pub fn int_overflow_example() {
+    let mut i = 0_u16;
+    print!("{}...", i);
+
+    loop {
+        i += 1000;
+        print!("{}...", i);
+        if i % 10000 == 0 {
+            print!("\n")
+        }
+    }
 }
