@@ -1,0 +1,28 @@
+pub struct CPU {
+    current_operation: u16,
+    registers: [u8; 2],
+}
+
+impl CPU {
+    pub fn new() -> Self {
+        Self {
+            current_operation: 0,
+            registers: [0, 2],
+        }
+    }
+
+    pub fn read_opcode(&self) -> u16 {
+        self.current_operation
+    }
+
+    pub fn run(&mut self) {
+        //loop {
+        let opcode = self.read_opcode();
+        let c = ((opcode & 0xF000) >> 12) as u8;
+        let x = ((opcode & 0x0F00) >> 8) as u8;
+        let y = ((opcode & 0x00F0) >> 4) as u8;
+        let d = ((opcode & 0x000F) >> 0) as u8;
+
+        //}
+    }
+}
