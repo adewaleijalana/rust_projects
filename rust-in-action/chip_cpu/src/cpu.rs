@@ -64,12 +64,23 @@ impl CPU {
         let stack = &mut self.stack;
 
         if sp > stack.len() {
-            panic!("Stact overflow!!!")
+            panic!("Stact overflow!!!");
         }
 
         stack[sp] = self.position_in_memory as u16;
         self.stack_pointer += 1;
         self.position_in_memory = address as usize;
+    }
+
+    pub fn retrieve(&mut self) {
+        if self.stack_pointer == 0 {
+             panic!("Stact overflow!!!");
+        }
+
+        self.stack_pointer -= 1;
+
+        let call_address = self.stack[self.stack_pointer];
+        self.position_in_memory = call_address as usize;
     }
 
     // fn add_xy(&mut self, x: u8, y: u8) {
