@@ -30,6 +30,7 @@ impl CPU {
         let d = ((opcode & 0x000F) >> 0) as u8;
 
         match (c, x, y, d) {
+          (0, 0, 0, 0) => { return; },
             (0x8, _, _, 0x4) => self.add_xy(x, y),
             _ => todo!("opcode {:04x}", opcode),
         }
