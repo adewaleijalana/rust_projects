@@ -19,7 +19,7 @@ fn main() {
 
 fn test_is_bit_on() {
     let num_bit = 0b0011_0000_1111_0110;
-    let mask = 0b0010_0000_0000_0000;
+    let mask = 0b0010_0000_0000_0010;
 
     println!("{} | {}", num_bit, mask);
     println!("{:0b} | {:0b}", num_bit, mask);

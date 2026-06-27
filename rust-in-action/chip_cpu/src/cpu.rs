@@ -1,5 +1,5 @@
 pub struct CPU {
-    pub current_operation: u16,
+    resgister: [u8; 16],
     position_in_memory: usize,
     memory: [u8; 0x1000],
 }
@@ -7,7 +7,7 @@ pub struct CPU {
 impl CPU {
     pub fn new() -> Self {
         Self {
-            current_operation: 0,
+            resgister: [0; 16],
             position_in_memory: 0,
             memory: [0; 0x1000],
         }
@@ -38,7 +38,17 @@ impl CPU {
     }
 
     fn add_xy(&mut self, x: u8, y: u8) {
-        // self.registers[x as usize] += self.registers[y as usize];
+       let arg1 = self.resgister[x as usize];
+       let arg2 = self.resgister[y as usize];
+
+       let (val, overflow) = arg1.overflowing_add(arg2);
+       self.resgister[x as usize] = val;
+
+       if overflow {
+           self.resgister[0xf] = 1;
+       }else {
+           self.resgister[0xf] = 0;
+       }
     }
 
     // fn add_xy(&mut self, x: u8, y: u8) {
