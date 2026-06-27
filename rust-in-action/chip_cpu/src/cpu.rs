@@ -2,6 +2,8 @@ pub struct CPU {
     pub registers: [u8; 16],
     position_in_memory: usize,
     pub memory: [u8; 0x1000],
+    stack: [u16; 16],
+    stack_pointer: usize,
 }
 
 impl CPU {
@@ -10,6 +12,8 @@ impl CPU {
             registers: [0; 16],
             position_in_memory: 0,
             memory: [0; 0x1000],
+            stack: [0; 16],
+            stack_pointer: 0,
         }
     }
 
@@ -53,6 +57,19 @@ impl CPU {
         } else {
             self.registers[0xf] = 0;
         }
+    }
+
+    pub fn call(&mut self, address: u16) {
+        let sp = self.stack_pointer;
+        let stack = &mut self.stack;
+
+        if sp > stack.len() {
+            panic!("Stact overflow!!!")
+        }
+
+        stack[sp] = self.position_in_memory as u16;
+        self.stack_pointer += 1;
+        self.position_in_memory = address as usize;
     }
 
     // fn add_xy(&mut self, x: u8, y: u8) {
