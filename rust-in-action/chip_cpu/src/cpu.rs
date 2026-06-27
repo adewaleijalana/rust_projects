@@ -35,10 +35,14 @@ impl CPU {
             let y = ((opcode & 0x00F0) >> 4) as u8;
             let d = ((opcode & 0x000F) >> 0) as u8;
 
+            let nnn = opcode & 0x0FFF;
+
             match (c, x, y, d) {
                 (0, 0, 0, 0) => {
                     return;
                 }
+                (0, 0, 0xE, 0xE) => self.retrieve(),
+                (0x2, _, _, _) => self.call(nnn),
                 (0x8, _, _, 0x4) => self.add_xy(x, y),
                 _ => todo!("opcode {:04x}", opcode),
             }
@@ -74,7 +78,7 @@ impl CPU {
 
     pub fn retrieve(&mut self) {
         if self.stack_pointer == 0 {
-             panic!("Stact overflow!!!");
+            panic!("Stact overflow!!!");
         }
 
         self.stack_pointer -= 1;
