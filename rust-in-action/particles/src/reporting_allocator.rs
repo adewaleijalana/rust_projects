@@ -1,4 +1,4 @@
-use std::{alloc::{GlobalAlloc, System}, time::Instant};
+use std::{alloc::{GlobalAlloc, System, Layout}, time::Instant};
 
 
 #[global_allocator]
@@ -7,7 +7,7 @@ static ALLOCATOR: ReportingAllocator = ReportingAllocator;
 pub struct ReportingAllocator;
 
 unsafe impl GlobalAlloc for ReportingAllocator {
-    unsafe fn alloc(&self, layout: std::alloc::Layout) -> *mut u8 {
+    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
         let start = Instant::now();
         let ptr = unsafe { System.alloc(layout) };
         let end = Instant::now();
@@ -20,7 +20,7 @@ unsafe impl GlobalAlloc for ReportingAllocator {
         ptr
     }
 
-    unsafe fn dealloc(&self, ptr: *mut u8, layout: std::alloc::Layout) {
+    unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
         unsafe { System.dealloc(ptr, layout) };
     }
 }
