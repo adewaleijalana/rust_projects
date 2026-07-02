@@ -11,7 +11,7 @@ pub struct World {
 }
 
 impl World {
-    fn new(width: f64, height: f64) -> World {
+    pub fn new(width: f64, height: f64) -> World {
         World {
             current_turn: 0,
             particles: Vec::<Box<Particle>>::new(),
@@ -21,7 +21,7 @@ impl World {
         }
     }
 
-    fn add_shapes(&mut self, n: i32) {
+    pub fn add_shapes(&mut self, n: i32) {
         for _ in 0..n.abs() {
             let particle = Particle::new(&self);
             let boxed_particle = Box::new(particle);
@@ -50,7 +50,7 @@ impl World {
         }
     }
 
-    fn update(&mut self) {
+    pub fn update(&mut self) {
         let n = self.rng.random_range(-3..=3);
 
         if n > 0 {

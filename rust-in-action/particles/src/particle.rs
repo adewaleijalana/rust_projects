@@ -1,4 +1,9 @@
-use graphics::math::{Vec2d, add, mul_scalar};
+use graphics::{
+    clear,
+    math::{Vec2d, add, mul_scalar},
+    rectangle,
+};
+use piston_window::{PistonWindow, WindowSettings};
 use rand::{RngExt, rng};
 
 use crate::world::World;
