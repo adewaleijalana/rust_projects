@@ -1,5 +1,7 @@
-use std::{alloc::{GlobalAlloc, System, Layout}, time::Instant};
-
+use std::{
+    alloc::{GlobalAlloc, Layout, System},
+    time::Instant,
+};
 
 #[global_allocator]
 static ALLOCATOR: ReportingAllocator = ReportingAllocator;
