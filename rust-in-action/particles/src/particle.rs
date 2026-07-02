@@ -13,7 +13,7 @@ pub struct Particle {
 }
 
 impl Particle {
-    fn new(world: &World) -> Particle {
+    pub fn new(world: &World) -> Particle {
         let mut rng = rng();
         let x = rng.random_range(0.0..=world.width);
         let y = world.height;
@@ -32,7 +32,7 @@ impl Particle {
         }
     }
 
-    fn update(&mut self) {
+    pub fn update(&mut self) {
         self.velocity = add(self.velocity, self.acceleration);
         self.position = add(self.position, self.velocity);
         self.acceleration = mul_scalar(self.acceleration, 0.7);
