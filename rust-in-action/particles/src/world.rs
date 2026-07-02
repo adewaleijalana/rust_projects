@@ -15,8 +15,8 @@ impl World {
         World {
             current_turn: 0,
             particles: Vec::<Box<Particle>>::new(),
-            height: height,
-            width: width,
+            height,
+            width,
             rng: rng(),
         }
     }
