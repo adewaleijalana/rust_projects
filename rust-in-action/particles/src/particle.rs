@@ -1,15 +1,15 @@
-use graphics::math::Vec2d;
+use graphics::math::{Vec2d, add, mul_scalar};
 use rand::{RngExt, rng};
 
 use crate::world::World;
 
 pub struct Particle {
-    height: f64,
-    width: f64,
-    position: Vec2d<f64>,
-    velocity: Vec2d<f64>,
-    acceleration: Vec2d<f64>,
-    color: [f32; 4],
+    pub height: f64,
+    pub width: f64,
+    pub position: Vec2d<f64>,
+    pub velocity: Vec2d<f64>,
+    pub acceleration: Vec2d<f64>,
+    pub color: [f32; 4],
 }
 
 impl Particle {
@@ -30,5 +30,12 @@ impl Particle {
             acceleration: [x_acceleration, y_acceleration].into(),
             color: [1.0, 1.0, 1.0, 0.99],
         }
+    }
+
+    fn update(&mut self) {
+        self.velocity = add(self.velocity, self.acceleration);
+        self.position = add(self.position, self.velocity);
+        self.acceleration = mul_scalar(self.acceleration, 0.7);
+        self.color[3] *= 0.995;
     }
 }
