@@ -3,6 +3,21 @@ use particles::world::World;
 use piston_window::{PistonWindow, WindowSettings};
 fn main() {
     run();
+    // memscan_1();
+}
+
+fn memscan_1 (){
+    let mut n_nonzero = 0;
+
+    for i in 0..10_000 {
+        let ptr = i as *const u8;
+        let byte_at_addr = unsafe { *ptr };
+
+        if byte_at_addr != 0 {
+            n_nonzero += 1;
+        }
+    }
+    println!("non-zero bytes in memory: {}", n_nonzero);
 }
 
 fn run() {
