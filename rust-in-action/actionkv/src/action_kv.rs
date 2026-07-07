@@ -1,5 +1,8 @@
 use std::{
-    collections::HashMap, fs::{File, OpenOptions}, io::{self, BufReader, Read, Seek, SeekFrom}, path::Path,
+    collections::HashMap,
+    fs::{File, OpenOptions},
+    io::{self, BufReader, Read, Seek, SeekFrom},
+    path::Path,
 };
 
 use byteorder::{LittleEndian, ReadBytesExt};
@@ -76,5 +79,12 @@ impl ActionKV {
         let key = data;
 
         Ok(KeyValuePair { key, value })
+    }
+
+    pub fn insert(&mut self, key: &ByteStr, value: &ByteStr) -> io::Result<()> {
+        let position = self.insert_but_ignore_index(key, value)?;
+
+        self.index.insert(key.to_vec(), position);
+        Ok(())
     }
 }
