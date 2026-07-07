@@ -125,4 +125,15 @@ impl ActionKV {
     pub fn seek_to_end(&mut self) -> io::Result<u64> {
         self.file.seek(SeekFrom::End(0))
     }
+
+    pub fn get(&mut self, key: &ByteStr) -> io::Result<Option<ByteString>> {
+        let position = match self.index.get(key) {
+          None => return Ok(None),
+          Some(position) => *position,
+        };
+
+        let kv = self.get_at(position)?;
+
+        Ok(Some(kv))
+    }
 }
