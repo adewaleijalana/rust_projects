@@ -1,5 +1,8 @@
 use std::{
-    collections::HashMap, fs::{File, OpenOptions}, io::{self, BufReader, BufWriter, Read, Seek, SeekFrom}, path::Path,
+    collections::HashMap,
+    fs::{File, OpenOptions},
+    io::{self, BufReader, BufWriter, Read, Seek, SeekFrom},
+    path::Path,
 };
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
@@ -85,20 +88,24 @@ impl ActionKV {
         Ok(())
     }
 
-    pub fn insert_but_ignore_index(&mut self, key: &ByteStr, value: &ByteStr) -> io::Result<u64>{
+    pub fn insert_but_ignore_index(&mut self, key: &ByteStr, value: &ByteStr) -> io::Result<u64> {
         let file = BufWriter::new(&mut self.file);
         let key_len = key.len();
         let value_len = value.len();
 
         let mut temp = ByteString::with_capacity(key_len + value_len);
 
-        for byte in key {
-            temp.push(*byte);
-        }
+        // for byte in key {
+        //     temp.push(*byte);
+        // }
 
-        for byte in  value{
-            temp.push(*byte);
-        }
+        temp.extend_from_slice(key);
+
+        // for byte in  value{
+        //     temp.push(*byte);
+        // }
+
+        temp.extend_from_slice(value);
 
         let checksum = crc32::checksum_ieee(&tmp);
 
@@ -113,6 +120,9 @@ impl ActionKV {
         f.write_all(&mut tmp)?;
 
         Ok(current_position)
+    }
 
+    pub fn seek_to_end(&mut self) -> io::Result<u64> {
+        self.file.seek(SeekFrom::End(0))
     }
 }
