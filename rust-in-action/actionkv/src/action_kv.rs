@@ -1,9 +1,8 @@
 use std::{
-    collections::HashMap,
-    fs::{File, OpenOptions},
-    io::{self, BufReader, Seek, SeekFrom},
-    path::Path,
+    collections::HashMap, fs::{File, OpenOptions}, io::{self, BufReader, Read, Seek, SeekFrom}, path::Path,
 };
+
+use byteorder::{LittleEndian, ReadBytesExt};
 
 use crate::key_value_pair::{ByteString, KeyValuePair};
 
@@ -48,7 +47,34 @@ impl ActionKV {
         Ok(())
     }
 
-    pub fn process_record<R: io::Read + Seek>(reader: &mut R) -> io::Result<KeyValuePair> {
-        Ok(KeyValuePair { key: (), value: () })
+    pub fn process_record<R: io::Read>(reader: &mut R) -> io::Result<KeyValuePair> {
+        let saved_checksum = reader.read_u32::<LittleEndian>()?;
+        let key_len = reader.read_u32::<LittleEndian>()?;
+        let val_len = reader.read_u32::<LittleEndian>()?;
+        let data_len = key_len + val_len;
+
+        let mut data = ByteString::with_capacity(data_len as usize);
+
+        {
+            reader
+                .by_ref()
+                .take(data_len as u64)
+                .read_to_end(&mut data)?;
+        }
+
+        debug_assert_eq!(data.len(), data_len as usize);
+
+        let checksum = crc32::checksum_ieee(&data);
+        if checksum != saved_checksum {
+            panic!(
+                "data corruption encountered ({:08x} != {:08x})",
+                checksum, saved_checksum
+            );
+        }
+
+        let value = data.split_off(key_len as usize);
+        let key = data;
+
+        Ok(KeyValuePair { key, value })
     }
 }
