@@ -1,13 +1,10 @@
 use std::{
-    collections::HashMap,
-    fs::{File, OpenOptions},
-    io::{self, BufReader, Read, Seek, SeekFrom},
-    path::Path,
+    collections::HashMap, fs::{File, OpenOptions}, io::{self, BufReader, BufWriter, Read, Seek, SeekFrom}, path::Path,
 };
 
-use byteorder::{LittleEndian, ReadBytesExt};
+use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 
-use crate::key_value_pair::{ByteString, KeyValuePair};
+use crate::key_value_pair::{ByteStr, ByteString, KeyValuePair};
 
 #[derive(Debug)]
 pub struct ActionKV {
@@ -86,5 +83,36 @@ impl ActionKV {
 
         self.index.insert(key.to_vec(), position);
         Ok(())
+    }
+
+    pub fn insert_but_ignore_index(&mut self, key: &ByteStr, value: &ByteStr) -> io::Result<u64>{
+        let file = BufWriter::new(&mut self.file);
+        let key_len = key.len();
+        let value_len = value.len();
+
+        let mut temp = ByteString::with_capacity(key_len + value_len);
+
+        for byte in key {
+            temp.push(*byte);
+        }
+
+        for byte in  value{
+            temp.push(*byte);
+        }
+
+        let checksum = crc32::checksum_ieee(&tmp);
+
+        let next_byte = SeekFrom::End(0);
+
+        let current_position = file.seek(SeekFrom::Current(0))?;
+        file.seek(next_byte)?;
+        file.write_u32::<LittleEndian>(checksum)?;
+        file.write_u32::<LittleEndian>(key_len as u32)?;
+        file.write_u32::<LittleEndian>(value_len as u32)?;
+
+        f.write_all(&mut tmp)?;
+
+        Ok(current_position)
+
     }
 }
