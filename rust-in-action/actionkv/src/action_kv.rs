@@ -128,8 +128,8 @@ impl ActionKV {
 
     pub fn get(&mut self, key: &ByteStr) -> io::Result<Option<ByteString>> {
         let position = match self.index.get(key) {
-          None => return Ok(None),
-          Some(position) => *position,
+            None => return Ok(None),
+            Some(position) => *position,
         };
 
         let kv = self.get_at(position)?;
@@ -145,5 +145,32 @@ impl ActionKV {
         let kv = ActionKV::process_record(&mut file)?;
 
         Ok(kv)
+    }
+
+    pub fn find(&mut self, target: &ByteStr) -> io::Result<Option<(u64, ByteString)>> {
+        let mut file = BufReader::new(&mut self.file);
+        let mut found: Option<(u64, ByteString)> = None;
+
+        loop {
+            let position = file.seek(SeekFrom::Current(0))?;
+
+            let maybe_kv = ActionKV::process_record(&mut file);
+
+            let kv = match maybe_kv {
+                Ok(kv) => kv,
+                Err(err) => match err.kind() {
+                    io::ErrorKind::UnexpectedEof => {
+                        break;
+                    }
+                    _ => return Err(err),
+                },
+            };
+
+            if kv.key == target {
+              found = Some((position, kv.value))
+            }
+        };
+
+        Ok(found)
     }
 }
