@@ -173,4 +173,12 @@ impl ActionKV {
 
         Ok(found)
     }
+
+    pub fn insert (&mut self, key: &ByteStr) -> io::Result<()> {
+      let position = self.insert_but_ignore_index(key, value)?;
+      self.index.insert(key.to_vec(), position);
+
+      Ok(())
+
+    }
 }
