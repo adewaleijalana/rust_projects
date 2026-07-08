@@ -181,4 +181,14 @@ impl ActionKV {
       Ok(())
 
     }
+
+    #[inline]
+    pub fn update(&mut self, key: &ByteStr, value: &ByteStr)  -> io::Result<()> {
+        self.insert(key, value)
+    }
+
+    #[inline]
+    pub fn delete(&mut self, key: &ByteStr, value: &ByteStr)  -> io::Result<()> {
+        self.insert(key, b"")
+    }
 }
