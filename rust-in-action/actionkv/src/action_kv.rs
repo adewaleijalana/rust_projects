@@ -1,11 +1,9 @@
 use std::{
-    collections::HashMap,
-    fs::{File, OpenOptions},
-    io::{self, BufReader, BufWriter, Read, Seek, SeekFrom},
-    path::Path,
+    collections::HashMap, fs::{File, OpenOptions}, io::{self, BufReader, BufWriter, Read, Seek, SeekFrom, Write}, path::Path,
 };
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
+use crc::crc32;
 
 use crate::key_value_pair::{ByteStr, ByteString, KeyValuePair};
 
@@ -89,7 +87,7 @@ impl ActionKV {
     }
 
     pub fn insert_but_ignore_index(&mut self, key: &ByteStr, value: &ByteStr) -> io::Result<u64> {
-        let file = BufWriter::new(&mut self.file);
+        let mut file = BufWriter::new(&mut self.file);
         let key_len = key.len();
         let value_len = value.len();
 
@@ -107,7 +105,7 @@ impl ActionKV {
 
         temp.extend_from_slice(value);
 
-        let checksum = crc32::checksum_ieee(&tmp);
+        let checksum = crc32::checksum_ieee(&temp);
 
         let next_byte = SeekFrom::End(0);
 
@@ -117,7 +115,7 @@ impl ActionKV {
         file.write_u32::<LittleEndian>(key_len as u32)?;
         file.write_u32::<LittleEndian>(value_len as u32)?;
 
-        f.write_all(&mut tmp)?;
+        file.write_all(&mut temp)?;
 
         Ok(current_position)
     }
@@ -167,28 +165,27 @@ impl ActionKV {
             };
 
             if kv.key == target {
-              found = Some((position, kv.value))
+                found = Some((position, kv.value))
             }
-        };
+        }
 
         Ok(found)
     }
 
-    pub fn insert (&mut self, key: &ByteStr) -> io::Result<()> {
-      let position = self.insert_but_ignore_index(key, value)?;
-      self.index.insert(key.to_vec(), position);
+    // pub fn insert(&mut self, key: &ByteStr) -> io::Result<()> {
+    //     let position = self.insert_but_ignore_index(key, value)?;
+    //     self.index.insert(key.to_vec(), position);
 
-      Ok(())
-
-    }
+    //     Ok(())
+    // }
 
     #[inline]
-    pub fn update(&mut self, key: &ByteStr, value: &ByteStr)  -> io::Result<()> {
+    pub fn update(&mut self, key: &ByteStr, value: &ByteStr) -> io::Result<()> {
         self.insert(key, value)
     }
 
     #[inline]
-    pub fn delete(&mut self, key: &ByteStr, value: &ByteStr)  -> io::Result<()> {
+    pub fn delete(&mut self, key: &ByteStr) -> io::Result<()> {
         self.insert(key, b"")
     }
 }
