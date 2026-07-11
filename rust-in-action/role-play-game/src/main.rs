@@ -1,3 +1,5 @@
+use role_play_game::run;
+
 fn main() {
-    println!("Hello, world!");
+    run();
 }
