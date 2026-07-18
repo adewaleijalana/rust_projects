@@ -1,3 +1,5 @@
+use macgen::mac_add;
+
 fn main() {
-    println!("Hello, world!");
+    mac_add()
 }

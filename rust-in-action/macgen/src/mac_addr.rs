@@ -1,6 +1,6 @@
+use rand::Rng;
 use std::fmt;
 use std::fmt::Display;
-use rand::Rng;
 
 #[derive(Debug)]
 pub struct MacAddress([u8; 6]);
