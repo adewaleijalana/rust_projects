@@ -1,4 +1,4 @@
-use clap::{Arg, ArgAction, Command, arg};
+use clap::{Arg, ArgAction, Command};
 use clock::clock::Clock;
 
 fn main() {
