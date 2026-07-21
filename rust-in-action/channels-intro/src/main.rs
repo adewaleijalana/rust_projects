@@ -1,15 +1,7 @@
-use std::thread;
+use crate::channel_simple::run_simple_channel;
 
-use crossbeam::{channel::unbounded, select};
+mod channel_simple;
 
 fn main() {
-    let (tx, rx) = unbounded::<i32>();
-
-    thread::spawn(move || {
-        tx.send(42).unwrap();
-    });
-
-    select! {
-        recv(rx) -> msg => println!("{:?}", msg),
-    }
+    run_simple_channel();
 }
